@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Home</title>
+    <!-- Add links to your CSS files -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Text and Video Analysis</h1>
+        <!-- Navigation if you have or plan to have multiple pages -->
+    </header>
+    
+    <main>
+        <!-- Section for Text Input -->
+        <section id="text-input-section">
+            <h2>Submit Text for Analysis</h2>
+            <form id="text-analysis-form" action="{% url 'user_inputs:text_input' %}" method="post">
+                {% csrf_token %}
+                <textarea name="text_input" placeholder="Enter text here..."></textarea>
+                <button type="submit">Analyze Text</button>
+            </form>
+        </section>
+        
+        <!-- Section for Video Link Input -->
+        <section id="video-input-section">
+            <h2>Submit Video Link for Analysis</h2>
+            <!-- This will be replaced with a form similar to the text input when you're ready -->
+            <form id="video-analysis-form" action="{% url 'user_inputs:video_input' %}" method="post">
+                {% csrf_token %}
+                <input type="url" name="video_input" placeholder="Enter video link here...">
+                <button type="submit">Analyze Video</button>
+            </form>
+        </section>
+        
+        <!-- Section for Displaying Analysis Results -->
+        <section id="analysis-results">
+            <h2>Analysis Results</h2>
+            <!-- Placeholder where the analysis results will be inserted -->
+            <div id="results-placeholder">Results will be displayed here.</div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>© 2024 Analysis Tool</p>
+    </footer>
+    
+    <!-- Add links to your JavaScript files -->
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

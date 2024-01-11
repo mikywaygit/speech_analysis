@@ -1,0 +1,5 @@
+<form action="{% url 'user_inputs:text_input' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit Text</button>
+</form>
