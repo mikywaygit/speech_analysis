@@ -39,12 +39,29 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     # APPS ARE BELLOW
     'apps.analyses.apps.AnalysisConfig',
     'apps.frontend.apps.FrontendConfig',
     'apps.graphics.apps.GraphicsConfig',
     'apps.user_inputs',
+    'apps.websockets',
 ]
+
+ASGI_APPLICATION = 'truth_will_set_you_free.routing.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        # Specifies that Django Channels should use Redis as its backing store
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            # Points to the Redis server
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

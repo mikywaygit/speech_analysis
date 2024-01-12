@@ -26,17 +26,6 @@
             </form>
         </section>
         
-        <!-- Section for Video Link Input -->
-        <section id="video-input-section">
-            <h2>Submit Video Link for Analysis</h2>
-            <!-- This will be replaced with a form similar to the text input when you're ready -->
-            <form id="video-analysis-form" action="{% url 'user_inputs:video_input' %}" method="post">
-                {% csrf_token %}
-                <input type="url" name="video_input" placeholder="Enter video link here...">
-                <button type="submit">Analyze Video</button>
-            </form>
-        </section>
-        
         <!-- Section for Displaying Analysis Results -->
         <section id="analysis-results">
             <h2>Analysis Results</h2>
