@@ -6,39 +6,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analysis Home</title>
-    <!-- Add links to your CSS files -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     <header>
         <h1>Text and Video Analysis</h1>
-        <!-- Navigation if you have or plan to have multiple pages -->
     </header>
     
     <main>
-        <!-- Section for Text Input -->
         <section id="text-input-section">
             <h2>Submit Text for Analysis</h2>
-            <form id="text-analysis-form" action="{% url 'user_inputs:text_input' %}" method="post">
+            <form id="text-analysis-form">
                 {% csrf_token %}
-                <textarea name="text_input" placeholder="Enter text here..."></textarea>
-                <button type="submit">Analyze Text</button>
+                <textarea id="text-input" name="text_input" placeholder="Enter text here..."></textarea>
+                <button type="button" id="analyze-button">Analyze Text</button>
             </form>
         </section>
         
-        <!-- Section for Displaying Analysis Results -->
-        <section id="analysis-results">
-            <h2>Analysis Results</h2>
-            <!-- Placeholder where the analysis results will be inserted -->
-            <div id="results-placeholder">Results will be displayed here.</div>
+        <!-- Section for displaying text analysis results -->
+        <section id="text-analysis-results">
+            <h2>Text Analysis Results</h2>
+            <div id="text-results-container">Textual results will be displayed here.</div>
+        </section>
+        
+        <!-- Section for displaying visualization results -->
+        <section id="visualization-results">
+            <h2>Visualization Results</h2>
+            <!-- Placeholder for the visualization image -->
+            <img id="visualization-image" src="" alt="Visualization will appear here" style="display:none;">
         </section>
     </main>
-    
+    <div id="status-message"></div>
     <footer>
         <p>© 2024 Analysis Tool</p>
     </footer>
     
-    <!-- Add links to your JavaScript files -->
-    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/websocket_handlers.js' %}"></script>
 </body>
 </html>

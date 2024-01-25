@@ -40,10 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'channels',
+    'django_extensions',
     # APPS ARE BELLOW
     'apps.analyses.apps.AnalysisConfig',
     'apps.frontend.apps.FrontendConfig',
-    'apps.graphics.apps.GraphicsConfig',
+    'apps.data_visualization.apps.DataVisualizationConfig',
     'apps.user_inputs',
     'apps.websockets',
 ]
@@ -60,6 +61,14 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -78,8 +87,7 @@ ROOT_URLCONF = 'truth_will_set_you_free.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -101,29 +109,31 @@ WSGI_APPLICATION = 'truth_will_set_you_free.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': Path(BASE_DIR) / 'db.sqlite3',
     }
 }
-"""
+
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': '/path/to/your/logs/debug.log',
+        'console': {
+            'class': 'logging.StreamHandler',
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
+            'handlers': ['console'],
             'level': 'DEBUG',
-            'propagate': True,
+        },
+        'django.channels': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
         },
     },
 }
-"""
+
 
 
 # Password validation
@@ -157,10 +167,10 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]  # This should point to your development static directory
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # This is for collected static files, used in production
 
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

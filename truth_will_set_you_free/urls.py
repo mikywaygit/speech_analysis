@@ -1,9 +1,8 @@
 from django.contrib import admin
 from django.urls import include, path
 from . import views
-from django.urls import re_path
-from websockets import consumers
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -11,5 +10,8 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('frontend/', include('apps.frontend.urls')),
     path('user_inputs/', include(('apps.user_inputs.urls', 'user_inputs'), namespace='user_inputs')),
-    re_path(r'ws/some_path/$', consumers.ChatConsumer.as_asgi()),
+    # Removed the line for WebSocket route
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
