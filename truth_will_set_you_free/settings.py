@@ -118,18 +118,20 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
+        'graylog': {
+            'level': 'DEBUG',
+            'class': 'pygelf.GelfUdpHandler',
+            'host': '127.0.0.1',
+            'port': 12201,  # Default GELF UDP port
+            'include_extra_fields': True,
+            '_django_app': 'your_app_name',  # Custom field to identify logs from this Django app
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['console'],
+            'handlers': ['graylog'],
             'level': 'DEBUG',
-        },
-        'django.channels': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
+            'propagate': True,
         },
     },
 }
