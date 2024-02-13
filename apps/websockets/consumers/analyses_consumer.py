@@ -7,9 +7,10 @@ from apps.analyses.tasks import perform_analysis  # Ensure this is the correct p
 
 logger = logging.getLogger(__name__)
 
+
 class UserTextInputConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.group_name = 'sentiment_analysis_group'
+        self.group_name = 'user_text_input'
         await self.channel_layer.group_add(
             self.group_name,
             self.channel_name
@@ -24,24 +25,19 @@ class UserTextInputConsumer(AsyncWebsocketConsumer):
         )
         logger.info(f"WebSocket disconnected, channel name: {self.channel_name}, close code: {close_code}")
 
-    async def receive(self, text_data):
+    async def receive(self, text_data=None, bytes_data=None):
+        # Handle receiving of text data from the WebSocket
         text_data_json = json.loads(text_data)
-        message = text_data_json['message']
+        message = text_data_json['message']  # Extract the message from the received JSON
         logger.info(f"Received message from client: {message}")
 
-        # Acknowledge the receipt of the message
+        # Acknowledge the receipt of the message to the client
         await self.send(text_data=json.dumps({
             'type': 'ack',
             'message': 'Data received'
         }))
         logger.info("Sent acknowledgment to client")
 
-        # Call the perform_analysis task with .delay to run it asynchronously
-        perform_analysis.delay(message, analysis_type='sentiment', group_name=self.group_name)
-
-    # This is a handler for receiving a message from the Celery task
-    async def send_analysis_result(self, event):
-        # Send the analysis result to the WebSocket
-        message = event['message']
-        await self.send(text_data=json.dumps(message))
-        logger.info(f"Sent analysis result to client: {message}")
+        # Trigger the Celery task with the received message
+        # Assuming perform_analysis.delay is defined elsewhere to enqueue the task.
+        perform_analysis.delay(message)

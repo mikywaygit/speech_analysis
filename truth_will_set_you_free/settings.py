@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'apps.data_visualization.apps.DataVisualizationConfig',
     'apps.user_inputs',
     'apps.websockets',
+    'apps.commands',
+
 ]
 
 ASGI_APPLICATION = 'truth_will_set_you_free.routing.application'
@@ -121,8 +123,8 @@ LOGGING = {
         'graylog': {
             'level': 'DEBUG',
             'class': 'pygelf.GelfUdpHandler',
-            'host': '127.0.0.1',
-            'port': 12201,  # Default GELF UDP port
+            'host': '0.0.0.0',
+            'port': 9000,  # Default GELF UDP port
             'include_extra_fields': True,
             '_django_app': 'your_app_name',  # Custom field to identify logs from this Django app
         },

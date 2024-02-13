@@ -4,4 +4,7 @@
     <option name="sdkName" value="Python 3.12 (truth_will_set_you_free)" />
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.10 (truth_will_set_you_free)" project-jdk-type="Python SDK" />
+  <component name="PythonCompatibilityInspectionAdvertiser">
+    <option name="version" value="3" />
+  </component>
 </project>

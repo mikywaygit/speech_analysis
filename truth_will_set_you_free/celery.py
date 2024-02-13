@@ -12,5 +12,7 @@ app = Celery('truth_will_set_you_free')
 # the configuration object to child processes.
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
-# Load task modules from all registered Django app configs.
-app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+# Manually import the specific task
+from apps.analyses.tasks import perform_analysis
+
+# No need to call autodiscover_tasks if you're manually importing tasks

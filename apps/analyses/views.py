@@ -17,6 +17,5 @@ def sentiment_analysis(text):
         sentiment_analyzer = SentimentAnalysis()
         result = sentiment_analyzer.analyze(text)
         return result
-        print(result)
     else:
         return {'error': 'No text provided'}
