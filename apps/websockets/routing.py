@@ -1,6 +1,6 @@
 from django.urls import re_path
 from .consumers.data_visualization_consumer import DataVisualizationConsumer
-from .consumers.analyses_consumer import UserTextInputConsumer
+from .consumers.user_input_consumer import UserTextInputConsumer
 from channels.routing import ProtocolTypeRouter, URLRouter
 
 websocket_urlpatterns = [
