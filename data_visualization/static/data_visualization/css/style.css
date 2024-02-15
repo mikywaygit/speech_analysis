@@ -1,0 +1,57 @@
+/* style.css */
+
+/* Ensure that the body has no margin to avoid scrollbars on full-page canvas */
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Hide scrollbars */
+    height: 100%;
+    width: 100%;
+}
+
+/* Style the canvas element to use all available space */
+#webgl-canvas {
+    display: block; /* Remove default margin */
+    background: #000; /* Give the canvas a black background */
+    width: 100%;
+    height: 100%;
+    position: absolute; /* Position it over the top of any other content */
+    top: 0;
+    left: 0;
+}
+
+/* Add styles for any buttons or UI elements you have */
+.button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10; /* Make sure UI elements are above the canvas */
+    padding: 10px 20px;
+    background: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Style for any text or labels */
+.label {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    z-index: 10;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+/* If you have a control panel or similar */
+.control-panel {
+    position: absolute;
+    top: 100px;
+    left: 10px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+    width: 200px; /* or whatever width you prefer */
+}

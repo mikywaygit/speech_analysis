@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Visualization</title>
+    <!-- Link to the stylesheet for styling the page and canvas -->
+    <link rel="stylesheet" href="{% static 'data_visualization/css/style.css' %}">
+</head>
+<body>
+    <!-- The WebGL canvas element -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- Include your JavaScript files -->
+    <script src="{% static 'data_visualization/js/webgl.js' %}"></script>
+    <script src="{% static 'data_visualization/js/interaction.js' %}"></script>
+
+    <!-- Any additional HTML elements for UI here -->
+    <div class="control-panel">
+        <!-- UI components like buttons, sliders, etc. -->
+    </div>
+
+    <!-- Remember to add the Django static template tag at the top of your HTML file -->
+    {% load static %}
+</body>
+</html>
