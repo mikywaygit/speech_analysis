@@ -1,0 +1,23 @@
+{
+  "name": "truth_will_set_you_free",
+  "version": "1.0.0",
+  "description": "MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikywaygit/speech_analysis.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mikywaygit/speech_analysis/issues"
+  },
+  "homepage": "https://github.com/mikywaygit/speech_analysis#readme",
+  "dependencies": {
+    "gl": "^6.0.2"
+  }
+}

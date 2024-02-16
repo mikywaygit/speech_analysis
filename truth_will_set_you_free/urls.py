@@ -10,7 +10,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('frontend/', include('apps.frontend.urls')),
     path('user_inputs/', include(('apps.user_inputs.urls', 'user_inputs'), namespace='user_inputs')),
-    # Removed the line for WebSocket route
+    path('data_visualization/', include(('apps.data_visualization.urls', 'data_visualization'), namespace='data_visualization')),
 ]
 
 if settings.DEBUG:
