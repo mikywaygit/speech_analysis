@@ -12,6 +12,12 @@
     <!-- The WebGL canvas element -->
     <canvas id="webgl-canvas" width="640" height="480"></canvas> <!-- Specify default width and height -->
 
+    <!-- Include the glMatrix library -->
+    <script src="{% static 'data_visualization/js/gl-matrix-min.js' %}"></script>
+
+    <!-- Debugging line to check if glMatrix is loaded -->
+    <script>console.log('glMatrix:', window.glMatrix);</script>
+
     <!-- Include your JavaScript files -->
     <script src="{% static 'data_visualization/js/webgl.js' %}"></script>
     <!-- Assuming interaction.js is needed and exists -->
