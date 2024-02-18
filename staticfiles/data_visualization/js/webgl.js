@@ -1,3 +1,4 @@
+import { mat4 } from './gl-matrix-min.js';
 document.addEventListener('DOMContentLoaded', (event) => {
     const canvas = document.getElementById('webgl-canvas');
     if (!canvas) {

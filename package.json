@@ -4,8 +4,9 @@
   "description": "MongoDB",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "start": "node app.js",
+  "test": "echo \"Error: no test specified\" && exit 1"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mikywaygit/speech_analysis.git"
@@ -18,6 +19,8 @@
   },
   "homepage": "https://github.com/mikywaygit/speech_analysis#readme",
   "dependencies": {
-    "gl": "^6.0.2"
+    "express": "^4.18.2",
+    "gl": "^6.0.2",
+    "gl-matrix": "^3.4.3"
   }
 }

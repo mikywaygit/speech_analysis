@@ -12,16 +12,19 @@
     <!-- The WebGL canvas element -->
     <canvas id="webgl-canvas" width="640" height="480"></canvas> <!-- Specify default width and height -->
 
-    <!-- Include the glMatrix library -->
-    <script src="{% static 'data_visualization/js/gl-matrix-min.js' %}"></script>
+    <!-- Include the glMatrix library (assuming it's a module or not depending on your use case) -->
+    <!-- If gl-matrix-min.js is not a module, this will expose it globally -->
+    <script type="module">
+        // Debugging line to check if glMatrix is loaded
+        import * as glMatrix from '{% static 'data_visualization/js/gl-matrix-min.js' %}';
+        window.glMatrix = glMatrix; // Expose it to the window object if needed elsewhere
+        console.log('glMatrix:', glMatrix);
+    </script>
 
-    <!-- Debugging line to check if glMatrix is loaded -->
-    <script>console.log('glMatrix:', window.glMatrix);</script>
-
-    <!-- Include your JavaScript files -->
-    <script src="{% static 'data_visualization/js/webgl.js' %}"></script>
+    <!-- Include your JavaScript file as a module -->
+    <script type="module" src="{% static 'data_visualization/js/webgl.js' %}"></script>
     <!-- Assuming interaction.js is needed and exists -->
-    <script src="{% static 'data_visualization/js/interaction.js' %}"></script>
+    <script type="module" src="{% static 'data_visualization/js/interaction.js' %}"></script>
 
     <!-- Any additional HTML elements for UI here -->
     <div class="control-panel">
