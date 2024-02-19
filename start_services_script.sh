@@ -29,4 +29,4 @@ echo "All services are starting..."
 
 # Opening a new private window of Google Chrome
 echo "Opening a new private window of Google Chrome at http://127.0.0.1:8000/..."
-nohup google-chrome --incognito http://127.0.0.1:8000/ > chrome.log 2>&1 &
+nohup google-chrome --incognito http://127.0.0.1:8000/data_visualization/ > chrome.log 2>&1 &
