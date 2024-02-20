@@ -1,7 +1,7 @@
 import * as glMatrix from './gl-matrix-min.js';
-import { mat4 } from './gl-matrix-min.js';
 
 // Initialize the matrices at the top level of the script, outside any functions
+const mat4 = glMatrix.mat4;
 let projectionMatrix = mat4.create();
 let modelViewMatrix = mat4.create();
 
