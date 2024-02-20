@@ -1,3 +1,3 @@
+[5462:5462:0220/115135.475223:ERROR:atom_cache.cc(224)] Add _ICC_PROFILE_1 to kAtomsToCache
 INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
-[29438:29438:0219/154010.782978:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 1 times!
-[29438:29438:0219/154014.782167:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 2 times!
+Fontconfig error: Cannot load default config file: No such file: (null)
