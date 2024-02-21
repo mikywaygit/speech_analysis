@@ -10,12 +10,8 @@
 <body>
     <canvas id="webgl-canvas" width="640" height="480"></canvas>
 
-    <!-- Include your JavaScript files as modules -->
-    <script type="module" src="{% static 'data_visualization/js/webgl.js' %}"></script>
-    <script type="module" src="{% static 'data_visualization/js/interaction.js' %}"></script>
+    <script src="{% static 'data_visualization/js/bundle.js' %}"></script>
 
-    <div class="control-panel">
-        <!-- UI components like buttons, sliders, etc. -->
     </div>
 </body>
 </html>
