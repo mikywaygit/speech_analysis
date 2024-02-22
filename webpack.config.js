@@ -1,11 +1,24 @@
 const path = require('path');
 
 module.exports = {
-  entry: './apps/data_visualization/static/data_visualization/js/webgl.js',
+  entry: './apps/data_visualization/static/data_visualization/js/main.js',
   output: {
-    path: path.resolve(__dirname, 'dist'), // The folder where Webpack will place the bundled files
+    path: path.resolve(__dirname, 'apps/data_visualization/static/data_visualization/dist'),
     filename: 'bundle.js' // The name of the bundled files
   },
   mode: 'production',
-  // Add your loaders, plugins, etc. here
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+          },
+        },
+      },
+    ],
+  },
 };

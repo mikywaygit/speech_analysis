@@ -29,6 +29,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+MIDDLEWARE_CLASSES = (
+    # ... other middleware classes...
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
+    # ... other middleware classes...
+) if DEBUG is True else (
+    # ... other middleware classes...
+)
 
 # Application definition
 
@@ -172,8 +181,8 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]  # This should point to your development static directory
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # This is for collected static files, used in production
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Default primary key field type
