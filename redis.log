@@ -1,0 +1,18 @@
+15088:C 22 Feb 2024 16:15:58.591 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+15088:C 22 Feb 2024 16:15:58.591 # Redis version=7.0.12, bits=64, commit=00000000, modified=0, pid=15088, just started
+15088:C 22 Feb 2024 16:15:58.591 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+15088:M 22 Feb 2024 16:15:58.591 * monotonic clock: POSIX clock_gettime
+15088:M 22 Feb 2024 16:15:58.591 * Running mode=standalone, port=6379.
+15088:M 22 Feb 2024 16:15:58.591 # Server initialized
+15088:M 22 Feb 2024 16:15:58.591 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+15088:M 22 Feb 2024 16:15:58.591 * Ready to accept connections
+15088:M 22 Feb 2024 17:12:31.710 * 100 changes in 300 seconds. Saving...
+15088:M 22 Feb 2024 17:12:31.711 * Background saving started by pid 18019
+18019:C 22 Feb 2024 17:12:31.716 * DB saved on disk
+18019:C 22 Feb 2024 17:12:31.716 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+15088:M 22 Feb 2024 17:12:31.811 * Background saving terminated with success
+15088:signal-handler (1708619586) Received SIGTERM scheduling shutdown...
+15088:M 22 Feb 2024 17:33:06.057 # User requested shutdown...
+15088:M 22 Feb 2024 17:33:06.057 * Saving the final RDB snapshot before exiting.
+15088:M 22 Feb 2024 17:33:06.059 * DB saved on disk
+15088:M 22 Feb 2024 17:33:06.059 # Redis is now ready to exit, bye bye...

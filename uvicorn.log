@@ -1,14 +1,32 @@
 INFO:     Will watch for changes in these directories: ['/home/jan/PycharmProjects/truth_will_set_you_free']
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [6180] using WatchFiles
-INFO:     Started server process [6189]
+INFO:     Started reloader process [6323] using WatchFiles
+INFO:     Started server process [6332]
 INFO:     Waiting for application startup.
 INFO:     ASGI 'lifespan' protocol appears unsupported.
 INFO:     Application startup complete.
-INFO:     127.0.0.1:33026 - "GET /data_visualization/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33028 - "GET /static/data_visualization/dist/bundle.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43928 - "GET /data_visualization/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43930 - "GET /static/data_visualization/dist/bundle.js HTTP/1.1" 200 OK
 /home/jan/PycharmProjects/truth_will_set_you_free/venv/lib/python3.12/site-packages/django/http/response.py:517: Warning: StreamingHttpResponse must consume synchronous iterators in order to serve them asynchronously. Use an asynchronous iterator instead.
   warnings.warn(
-INFO:     127.0.0.1:33026 - "GET /static/data_visualization/css/style.css HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33028 - "GET /static/data_visualization/dist/961.bundle.js HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33028 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:43928 - "GET /static/data_visualization/css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43930 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:43934 - "GET / HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 43956) - "WebSocket /ws/user_input/" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:43934 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:43934 - "GET /data_visualization/ HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:43958 - "GET /static/data_visualization/dist/bundle.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42992 - "GET / HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 43000) - "WebSocket /ws/user_input/" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:42992 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     connection closed
+INFO:     127.0.0.1:47918 - "GET / HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 47934) - "WebSocket /ws/user_input/" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:47918 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:47918 - "GET /data_visualization/ HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:47918 - "GET /static/data_visualization/dist/bundle.js HTTP/1.1" 304 Not Modified

@@ -7,6 +7,7 @@ module.exports = {
     filename: 'bundle.js' // The name of the bundled files
   },
   mode: 'production',
+  devtool: 'source-map', // Add this line for source mapping
   module: {
     rules: [
       {
