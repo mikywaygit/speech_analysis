@@ -1,10 +1,18 @@
 export function initBuffers(gl) {
+    if (!gl) {
+        console.error('WebGL context is not available.');
+        return;
+    }
+
     // Buffer for the cube's vertices
     const positionBuffer = gl.createBuffer();
+    if (!positionBuffer) {
+        console.error('Failed to create a position buffer.');
+        return;
+    }
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
-    // Array of positions for the cube
-    const positions = [
+     const positions = [
         // Front face
         -1.0, -1.0,  1.0,
          1.0, -1.0,  1.0,
@@ -45,10 +53,13 @@ export function initBuffers(gl) {
 
     // Create a buffer for the cube's indices
     const indexBuffer = gl.createBuffer();
+    if (!indexBuffer) {
+        console.error('Failed to create an index buffer.');
+        return;
+    }
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
-    // This array defines each face as two triangles, using the indices into the vertex array to specify each triangle's position
-    const indices = [
+     const indices = [
         0, 1, 2,     0, 2, 3,    // front
         4, 5, 6,     4, 6, 7,    // back
         8, 9, 10,    8, 10, 11,  // top
@@ -58,7 +69,6 @@ export function initBuffers(gl) {
     ];
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
 
-    // Return the buffer object updated with positions and indices
     return {
         position: positionBuffer,
         indices: indexBuffer,

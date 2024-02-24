@@ -64,3 +64,5 @@ async function main() {
 }
 
 document.addEventListener('DOMContentLoaded', main);
+
+//# sourceMappingURL=bundle.js.map
