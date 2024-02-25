@@ -1,6 +1,5 @@
 import { mat4 } from 'gl-matrix';
 
-
 export function drawScene(gl, programInfo, buffers, projectionMatrix, modelViewMatrix) {
     if (!gl) {
         console.error('WebGL context is not available.');
@@ -12,35 +11,33 @@ export function drawScene(gl, programInfo, buffers, projectionMatrix, modelViewM
     gl.enable(gl.DEPTH_TEST); // Enable depth testing
     gl.depthFunc(gl.LEQUAL); // Near things obscure far things
 
-    // Clear the canvas
+    // Clear the canvas before rendering
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
+    // Use the shader program before setting uniforms and drawing
+    gl.useProgram(programInfo.program);
+
+    // Bind the position buffer
     gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
     if (!buffers.position) {
         console.error('Position buffer is not available.');
+        return; // Added return to stop execution if buffer is unavailable
     }
     gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
 
+    // Bind the index buffer
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
     if (!buffers.indices) {
         console.error('Index buffer is not available.');
+        return; // Added return to stop execution if buffer is unavailable
     }
 
-    // Error checking for shader program uniform locations
-    if (!programInfo.uniformLocations.projectionMatrix || !programInfo.uniformLocations.modelViewMatrix) {
-        console.error('Shader program uniform location is not available.');
-    }
-
-    mat4.perspective(projectionMatrix, 45 * Math.PI / 180,
-                     gl.canvas.clientWidth / gl.canvas.clientHeight,
-                     0.1,
-                     100.0);
-    mat4.translate(modelViewMatrix, modelViewMatrix, [-0.0, 0.0, -6.0]);
-
+    // Set the shader uniforms for projection and model-view matrices
     gl.uniformMatrix4fv(programInfo.uniformLocations.projectionMatrix, false, projectionMatrix);
     gl.uniformMatrix4fv(programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix);
 
+    // Draw the object
     gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
 }
 
