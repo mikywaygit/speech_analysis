@@ -1,7 +1,7 @@
 // js/main.js
 import { initShaderProgram } from './webgl-utils/shaders.js';
 import { initBuffers } from './webgl-utils/buffers.js';
-import { drawScene,  render, vsSource, fsSource } from './webgl-utils/render.js';
+import { drawScene,  render } from './webgl-utils/render.js';
 
 
 // Expose functions to the global scope for debugging
