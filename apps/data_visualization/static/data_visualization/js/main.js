@@ -9,6 +9,7 @@ window.initShaderProgram = initShaderProgram;
 window.initBuffers = initBuffers;
 window.drawScene = drawScene;
 window.render = render;
+window.mat4 = mat4;
 
 // Shader sources
 const vsSource = `
@@ -26,6 +27,11 @@ const fsSource = `
     }
 `;
 
+// Expose shader sources to the global scope
+window.vsSource = vsSource;
+window.fsSource = fsSource;
+
+
 async function main() {
     const canvas = document.getElementById('webgl-canvas');
     const gl = canvas.getContext('webgl');
@@ -34,6 +40,10 @@ async function main() {
         console.error('Unable to initialize WebGL.');
         return;
     }
+
+    // Expose the WebGL context globally for debugging
+    window.gl = gl;
+
 
     // Initialize shader program
     const shaderProgram = initShaderProgram(gl, vsSource, fsSource);

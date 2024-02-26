@@ -9,6 +9,7 @@ window.initShaderProgram = initShaderProgram;
 window.initBuffers = initBuffers;
 window.drawScene = drawScene;
 window.render = render;
+window.mat4 = mat4;
 
 // Shader sources
 const vsSource = `
