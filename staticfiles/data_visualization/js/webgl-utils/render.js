@@ -7,9 +7,9 @@ export function drawScene(gl, programInfo, buffers, projectionMatrix, modelViewM
     }
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0); // Clear to black, fully opaque
-    gl.clearDepth(1.0); // Clear everything
-    gl.enable(gl.DEPTH_TEST); // Enable depth testing
-    gl.depthFunc(gl.LEQUAL); // Near things obscure far things
+    gl.clearDepth(1.0);                // Clear everything
+    gl.enable(gl.DEPTH_TEST);          // Enable depth testing
+    gl.depthFunc(gl.LEQUAL);           // Near things obscure far things
 
     // Clear the canvas before rendering
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -17,28 +17,28 @@ export function drawScene(gl, programInfo, buffers, projectionMatrix, modelViewM
     // Use the shader program before setting uniforms and drawing
     gl.useProgram(programInfo.program);
 
-    // Bind the position buffer
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
+    // Check if the position buffer is available before binding
     if (!buffers.position) {
         console.error('Position buffer is not available.');
-        return; // Added return to stop execution if buffer is unavailable
+        return; // Stop execution if buffer is unavailable
     }
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
     gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
 
-    // Bind the index buffer
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+    // Check if the index buffer is available before binding
     if (!buffers.indices) {
         console.error('Index buffer is not available.');
-        return; // Added return to stop execution if buffer is unavailable
+        return; // Stop execution if buffer is unavailable
     }
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
 
     // Set the shader uniforms for projection and model-view matrices
     gl.uniformMatrix4fv(programInfo.uniformLocations.projectionMatrix, false, projectionMatrix);
     gl.uniformMatrix4fv(programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix);
 
-    // Draw the object
-    gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
+    // Draw the object using elements
+    gl.drawElements(gl.TRIANGLES, buffers.numVertices, gl.UNSIGNED_SHORT, 0);
 }
 
 export function render(gl, programInfo, buffers, then) {

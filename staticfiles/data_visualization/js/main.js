@@ -1,10 +1,11 @@
 // js/main.js
 import { mat4 } from 'gl-matrix';
-import { initShaderProgram } from './webgl-utils/shaders.js';
+import { loadShader, initShaderProgram } from './webgl-utils/shaders.js';
 import { initBuffers } from './webgl-utils/buffers.js';
 import { drawScene, render } from './webgl-utils/render.js';
 
 // Expose functions to the global scope for debugging
+window.loadShader = loadShader;
 window.initShaderProgram = initShaderProgram;
 window.initBuffers = initBuffers;
 window.drawScene = drawScene;
@@ -27,6 +28,10 @@ const fsSource = `
     }
 `;
 
+// Expose shader sources to the global scope
+window.vsSource = vsSource;
+window.fsSource = fsSource;
+
 async function main() {
     const canvas = document.getElementById('webgl-canvas');
     const gl = canvas.getContext('webgl');
@@ -36,6 +41,9 @@ async function main() {
         return;
     }
 
+    // Expose the WebGL context globally for debugging
+    window.gl = gl;
+
     // Initialize shader program
     const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
     if (!shaderProgram) {
@@ -43,6 +51,7 @@ async function main() {
         return;
     }
 
+    // Define and expose programInfo globally for debugging
     const programInfo = {
         program: shaderProgram,
         attribLocations: {
@@ -53,6 +62,7 @@ async function main() {
             modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
         },
     };
+    window.programInfo = programInfo; // Expose programInfo for global access, if needed for debugging
 
     const buffers = initBuffers(gl);
     if (!buffers) {
@@ -68,10 +78,12 @@ async function main() {
     const modelViewMatrix = mat4.create();
     mat4.translate(modelViewMatrix, modelViewMatrix, [-0.0, 0.0, -6.0]);
 
+    // Draw the scene
     drawScene(gl, programInfo, buffers, projectionMatrix, modelViewMatrix);
 
     // Initialize 'then' for tracking the last frame's render time
     let then = {value: 0};
+    // Continuously render the scene
     render(gl, programInfo, buffers, then);
 }
 
