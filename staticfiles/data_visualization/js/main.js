@@ -37,19 +37,36 @@ const fsSource = `
 window.vsSource = vsSource;
 window.fsSource = fsSource;
 
+window.rotationAngles = { x: 0, y: 0, z: 0 };
+
 function updateScene() {
+    // Ensure the WebGL context and programInfo are correctly initialized
+    if (!window.gl || !window.programInfo || !window.buffers) {
+        console.error("WebGL context, programInfo, or buffers are not initialized.");
+        return;
+    }
+
     // Update the model-view matrix based on current rotation angles
     const modelViewMatrix = mat4.create();
     mat4.translate(modelViewMatrix, modelViewMatrix, [-0.0, 0.0, -6.0]); // Initial translation
-    mat4.rotate(modelViewMatrix, modelViewMatrix, rotationAngles.x, [1, 0, 0]); // Rotate around X axis
-    mat4.rotate(modelViewMatrix, modelViewMatrix, rotationAngles.y, [0, 1, 0]); // Rotate around Y axis
+    mat4.rotate(modelViewMatrix, modelViewMatrix, window.rotationAngles.x, [1, 0, 0]); // Rotate around X axis
+    mat4.rotate(modelViewMatrix, modelViewMatrix, window.rotationAngles.y, [0, 1, 0]); // Rotate around Y axis
+    // Optionally, if you've implemented rotation around the Z-axis:
+    // mat4.rotate(modelViewMatrix, modelViewMatrix, window.rotationAngles.z, [0, 0, 1]); // Rotate around Z axis
 
     // Redraw the scene with the updated model-view matrix
     drawScene(window.gl, window.programInfo, window.buffers, window.projectionMatrix, modelViewMatrix);
 }
 
-// Ensure the updateScene function is accessible globally if needed
+// Make sure the updateScene function is accessible globally
 window.updateScene = updateScene;
+
+// Add this line at the end of your main.js or inside the main function after setting up WebGL context, shader programs, and buffers
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize rotationAngles if not already set
+    window.rotationAngles = window.rotationAngles || { x: 0, y: 0, z: 0 };
+    updateScene(); // Initial scene update to apply any default transformations
+});
 
 async function main() {
     const canvas = document.getElementById('webgl-canvas');
@@ -60,18 +77,15 @@ async function main() {
         return;
     }
 
-    // Expose the WebGL context globally for debugging
-    window.gl = gl;
-
     // Initialize shader program
-    const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
+    const shaderProgram = await initShaderProgram(gl, window.vsSource, window.fsSource);
     if (!shaderProgram) {
         console.error('Initializing shader program failed.');
         return;
     }
 
-    // Define and expose programInfo globally for debugging
-    const programInfo = {
+    // Setup programInfo with shader locations
+    window.programInfo = {
         program: shaderProgram,
         attribLocations: {
             vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
@@ -79,55 +93,52 @@ async function main() {
         uniformLocations: {
             projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
             modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
-            uColor: gl.getUniformLocation(shaderProgram, 'uColor'), // Correctly set up for the uColor uniform
+            uColor: gl.getUniformLocation(shaderProgram, 'uColor'), // Assuming uColor uniform is used
         },
     };
-    window.programInfo = programInfo;
 
-    const buffers = initBuffers(gl);
-    if (!buffers) {
+    // Initialize buffers
+    window.buffers = await initBuffers(gl);
+    if (!window.buffers) {
         console.error('Initializing buffers failed.');
         return;
     }
 
-    // Create and initialize the projection matrix
-    const projectionMatrix = mat4.create();
-    mat4.perspective(projectionMatrix, 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
+    // Setup interaction handlers
+    setupInteractionHandlers(canvas);
 
-    // Create and initialize the model-view matrix
-    const modelViewMatrix = mat4.create();
-    mat4.translate(modelViewMatrix, modelViewMatrix, [-0.0, 0.0, -6.0]);
+    // Create and initialize matrices
+    window.projectionMatrix = mat4.create();
+    mat4.perspective(window.projectionMatrix, 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
 
-    // Draw the scene with the edges; you should pass edgeCount if your drawScene function needs it
-    drawScene(gl, programInfo, buffers, projectionMatrix, modelViewMatrix, buffers.edgeCount); // Adjusted to include edgeCount
+    function updateScene() {
+        // Ensure the WebGL context, programInfo, and buffers are correctly initialized
+        if (!window.gl || !window.programInfo || !window.buffers) {
+            console.error("WebGL context, programInfo, or buffers are not initialized.");
+            return;
+        }
 
-    // Initialize 'then' for tracking the last frame's render time
-    let then = {value: 0};
-    // Continuously render the scene
-    render(gl, programInfo, buffers, then);
+        // Update the model-view matrix based on current rotation angles
+        const modelViewMatrix = mat4.create();
+        mat4.translate(modelViewMatrix, modelViewMatrix, [-0.0, 0.0, -6.0]);
+        mat4.rotate(modelViewMatrix, modelViewMatrix, window.rotationAngles.x, [1, 0, 0]);
+        mat4.rotate(modelViewMatrix, modelViewMatrix, window.rotationAngles.y, [0, 1, 0]);
+
+        // Redraw the scene
+        drawScene(gl, window.programInfo, window.buffers, window.projectionMatrix, modelViewMatrix);
+    }
+
+    // Make updateScene globally accessible
+    window.updateScene = updateScene;
+
+    // Render loop
+    function renderLoop() {
+        updateScene();
+        requestAnimationFrame(renderLoop);
+    }
+
+    renderLoop();
 }
-
-
-document.addEventListener('DOMContentLoaded', async () => {
-    const canvas = document.getElementById('webgl-canvas');
-    canvas.addEventListener('mousedown', handleMouseDown);
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-
-    // Rest of your main function setup
-
-    // Modify the render loop to use updated rotationAngles
-    const renderLoop = () => {
-    // Update the model-view matrix with current rotation angles before drawing
-    const modelViewMatrix = mat4.create();
-    mat4.translate(modelViewMatrix, modelViewMatrix, [-0.0, 0.0, -6.0]); // Move the cube back a bit
-    mat4.rotate(modelViewMatrix, modelViewMatrix, rotationAngles.x, [1, 0, 0]); // Apply X rotation
-    mat4.rotate(modelViewMatrix, modelViewMatrix, rotationAngles.y, [0, 1, 0]); // Apply Y rotation
-
-    drawScene(gl, programInfo, buffers, projectionMatrix, modelViewMatrix); // No need for edgeCount here if it's used inside drawScene for edges
-    requestAnimationFrame(renderLoop);
-    };
-});
 
 
 document.addEventListener('DOMContentLoaded', main);
