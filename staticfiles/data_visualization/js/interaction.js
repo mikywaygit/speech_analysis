@@ -1,31 +1,39 @@
-// This function will handle user interactions with the WebGL canvas
-function setupInteractionHandlers(canvas) {
+// Global variables to track rotation
+let isDragging = false;
+let previousMousePosition = { x: 0, y: 0 };
+let rotationAngles = { x: 0, y: 0 };
+
+export const toRadians = (angleInDegrees) => angleInDegrees * Math.PI / 180;
+
+export function setupInteractionHandlers(canvas) {
     canvas.addEventListener('mousedown', handleMouseDown, false);
     canvas.addEventListener('mousemove', handleMouseMove, false);
     canvas.addEventListener('mouseup', handleMouseUp, false);
-    // Add other event listeners as necessary, such as 'click', 'wheel', or keyboard events
+    canvas.addEventListener('mouseleave', handleMouseUp, false); // Handle case when the mouse leaves the canvas
 }
 
-function handleMouseDown(event) {
-    // Handle mouse button press
-    console.log('Mouse button pressed', event);
-    // Add your interaction logic here
+export function handleMouseDown(event) {
+    isDragging = true;
+    previousMousePosition.x = event.clientX;
+    previousMousePosition.y = event.clientY;
 }
 
-function handleMouseMove(event) {
-    // Handle mouse movement
-    console.log('Mouse moved', event);
-    // Add your interaction logic here
+export function handleMouseMove(event) {
+    if (!isDragging) return;
+
+    const deltaX = event.clientX - previousMousePosition.x;
+    const deltaY = event.clientY - previousMousePosition.y;
+
+    rotationAngles.y += toRadians(deltaX);
+    rotationAngles.x += toRadians(deltaY);
+
+    previousMousePosition.x = event.clientX;
+    previousMousePosition.y = event.clientY;
+
+    // Emit an event or call a global function to trigger the scene update with the new rotation angles
+    updateScene(); // This needs to be defined in your main.js or a similar central place
 }
 
-function handleMouseUp(event) {
-    // Handle mouse button release
-    console.log('Mouse button released', event);
-    // Add your interaction logic here
+export function handleMouseUp(event) {
+    isDragging = false;
 }
-
-// Initialize interaction handlers once the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('webgl-canvas');
-    setupInteractionHandlers(canvas);
-});

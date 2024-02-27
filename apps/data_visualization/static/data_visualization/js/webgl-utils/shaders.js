@@ -31,7 +31,7 @@ export function initShaderProgram(gl, vsSource, fsSource) {
     return shaderProgram;
 }
 
-// Vertex shader program
+// Vertex shader program remains unchanged
 export const vsSource = `
     attribute vec3 aVertexPosition;
     uniform mat4 uModelViewMatrix;
@@ -42,9 +42,13 @@ export const vsSource = `
     }
 `;
 
-// Fragment shader program
+// Fragment shader program updated to set the color to red
 export const fsSource = `
+    precision mediump float;
+    uniform vec4 uColor; // Add this uniform for dynamic color control
+
     void main(void) {
-        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0); // Set the color to white
+        gl_FragColor = uColor; // Use the uniform color
     }
 `;
+
