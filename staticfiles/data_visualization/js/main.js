@@ -3,7 +3,7 @@ import { mat4 } from 'gl-matrix';
 import { loadShader, initShaderProgram } from './webgl-utils/shaders.js';
 import { initBuffers } from './webgl-utils/buffers.js';
 import { drawScene, render } from './webgl-utils/render.js';
-import { handleMouseDown, handleMouseMove, handleMouseUp, rotationAngles } from './interaction.js';
+import { setupInteractionHandlers, handleMouseDown, handleMouseMove, handleMouseUp, rotationAngles } from './interaction.js';
 
 
 // Expose functions to the global scope for debugging

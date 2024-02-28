@@ -3,7 +3,7 @@ import { mat4 } from 'gl-matrix';
 import { loadShader, initShaderProgram } from './webgl-utils/shaders.js';
 import { initBuffers } from './webgl-utils/buffers.js';
 import { drawScene, render } from './webgl-utils/render.js';
-import { handleMouseDown, handleMouseMove, handleMouseUp, rotationAngles } from './interaction.js';
+import { setupInteractionHandlers, handleMouseDown, handleMouseMove, handleMouseUp, rotationAngles } from './interaction.js';
 
 
 // Expose functions to the global scope for debugging
@@ -111,22 +111,10 @@ async function main() {
     window.projectionMatrix = mat4.create();
     mat4.perspective(window.projectionMatrix, 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
 
-    function updateScene() {
-        // Ensure the WebGL context, programInfo, and buffers are correctly initialized
-        if (!window.gl || !window.programInfo || !window.buffers) {
-            console.error("WebGL context, programInfo, or buffers are not initialized.");
-            return;
-        }
 
-        // Update the model-view matrix based on current rotation angles
-        const modelViewMatrix = mat4.create();
-        mat4.translate(modelViewMatrix, modelViewMatrix, [-0.0, 0.0, -6.0]);
-        mat4.rotate(modelViewMatrix, modelViewMatrix, window.rotationAngles.x, [1, 0, 0]);
-        mat4.rotate(modelViewMatrix, modelViewMatrix, window.rotationAngles.y, [0, 1, 0]);
 
-        // Redraw the scene
-        drawScene(gl, window.programInfo, window.buffers, window.projectionMatrix, modelViewMatrix);
-    }
+
+
 
     // Make updateScene globally accessible
     window.updateScene = updateScene;
