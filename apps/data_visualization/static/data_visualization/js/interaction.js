@@ -16,6 +16,7 @@ export function handleMouseDown(event) {
     isDragging = true;
     previousMousePosition.x = event.clientX;
     previousMousePosition.y = event.clientY;
+    console.log('MouseDown', { isDragging, previousMousePosition }); // Log the state after mouse down
 }
 
 export function handleMouseMove(event) {
@@ -30,10 +31,13 @@ export function handleMouseMove(event) {
     previousMousePosition.x = event.clientX;
     previousMousePosition.y = event.clientY;
 
+    console.log('MouseMove', { deltaX, deltaY, rotationAngles }); // Log the state after mouse move
+
     // Emit an event or call a global function to trigger the scene update with the new rotation angles
     updateScene(); // This needs to be defined in your main.js or a similar central place
 }
 
 export function handleMouseUp(event) {
     isDragging = false;
+    console.log('MouseUp', { isDragging }); // Log the state after mouse up
 }

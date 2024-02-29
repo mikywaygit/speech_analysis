@@ -1,4 +1,5 @@
-[8904:8904:0228/195643.861109:ERROR:atom_cache.cc(224)] Add _ICC_PROFILE_1 to kAtomsToCache
+[71165:71165:0229/211512.530774:ERROR:atom_cache.cc(224)] Add _ICC_PROFILE_1 to kAtomsToCache
+[71209:71209:0229/211514.463014:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 1 times!
 INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
-[8947:8947:0228/195646.007404:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 1 times!
-[8947:8947:0228/195646.015665:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 2 times!
+[71209:71209:0229/211516.637841:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 2 times!
+[71209:71209:0229/211545.904978:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 3 times!

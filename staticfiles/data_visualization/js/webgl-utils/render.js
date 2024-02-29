@@ -21,13 +21,16 @@ export function drawScene(gl, programInfo, buffers, rotationAngles) {
     const projectionMatrix = mat4.create();
     mat4.perspective(projectionMatrix, fieldOfView, aspect, zNear, zFar);
 
-    // Set up the model-view matrix with translation and rotation for 3D view
+    // Set up the model-view matrix with translation and dynamic rotation for 3D view
     const modelViewMatrix = mat4.create();
     mat4.translate(modelViewMatrix, modelViewMatrix, [-0.0, 0.0, -6.0]);
-    let angleY = 45 * Math.PI / 180;
-    let angleX = 35 * Math.PI / 180;
-    mat4.rotate(modelViewMatrix, modelViewMatrix, angleY, [0, 1, 0]);
-    mat4.rotate(modelViewMatrix, modelViewMatrix, angleX, [1, 0, 0]);
+
+    // Apply dynamic rotation based on mouse input
+    mat4.rotate(modelViewMatrix, modelViewMatrix, rotationAngles.x, [1, 0, 0]); // Rotate around X axis
+    mat4.rotate(modelViewMatrix, modelViewMatrix, rotationAngles.y, [0, 1, 0]); // Rotate around Y axis
+    if (rotationAngles.z !== undefined) { // Check if Z rotation is provided
+        mat4.rotate(modelViewMatrix, modelViewMatrix, rotationAngles.z, [0, 0, 1]); // Rotate around Z axis
+    }
 
     gl.useProgram(programInfo.program);
     gl.uniformMatrix4fv(programInfo.uniformLocations.projectionMatrix, false, projectionMatrix);
