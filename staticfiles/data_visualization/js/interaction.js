@@ -1,43 +1,53 @@
-// Global variables to track rotation
-let isDragging = false;
-let previousMousePosition = { x: 0, y: 0 };
-let rotationAngles = { x: 0, y: 0 };
+// Global state encapsulated under a single namespace
+window.webGLInteraction = {
+    isDragging: false,
+    previousMousePosition: { x: 0, y: 0 },
+    rotationAngles: { x: 0, y: 0, z: 0 } // Make sure this aligns with how you've defined it elsewhere
+};
 
+// Utility functions
 export const toRadians = (angleInDegrees) => angleInDegrees * Math.PI / 180;
 
+// Setup interaction handlers for the canvas
 export function setupInteractionHandlers(canvas) {
-    canvas.addEventListener('mousedown', handleMouseDown, false);
-    canvas.addEventListener('mousemove', handleMouseMove, false);
-    canvas.addEventListener('mouseup', handleMouseUp, false);
-    canvas.addEventListener('mouseleave', handleMouseUp, false); // Handle case when the mouse leaves the canvas
+    canvas.addEventListener('mousedown', window.webGLInteraction.handleMouseDown, false);
+    canvas.addEventListener('mousemove', window.webGLInteraction.handleMouseMove, false);
+    canvas.addEventListener('mouseup', window.webGLInteraction.handleMouseUp, false);
+    canvas.addEventListener('mouseleave', window.webGLInteraction.handleMouseUp, false); // Handle case when the mouse leaves the canvas
 }
 
-export function handleMouseDown(event) {
-    isDragging = true;
-    previousMousePosition.x = event.clientX;
-    previousMousePosition.y = event.clientY;
-    console.log('MouseDown', { isDragging, previousMousePosition }); // Log the state after mouse down
-}
+// Mouse down event
+window.webGLInteraction.handleMouseDown = (event) => {
+    window.webGLInteraction.isDragging = true;
+    window.webGLInteraction.previousMousePosition = { x: event.clientX, y: event.clientY };
+    console.log('MouseDown', { isDragging: window.webGLInteraction.isDragging, previousMousePosition: window.webGLInteraction.previousMousePosition });
+};
 
-export function handleMouseMove(event) {
-    if (!isDragging) return;
+// Mouse move event
+window.webGLInteraction.handleMouseMove = (event) => {
+    if (!window.webGLInteraction.isDragging) return;
 
-    const deltaX = event.clientX - previousMousePosition.x;
-    const deltaY = event.clientY - previousMousePosition.y;
+    const deltaX = event.clientX - window.webGLInteraction.previousMousePosition.x;
+    const deltaY = event.clientY - window.webGLInteraction.previousMousePosition.y;
 
-    rotationAngles.y += toRadians(deltaX);
-    rotationAngles.x += toRadians(deltaY);
+    window.webGLInteraction.rotationAngles.y += toRadians(deltaX);
+    window.webGLInteraction.rotationAngles.x -= toRadians(deltaY);
 
-    previousMousePosition.x = event.clientX;
-    previousMousePosition.y = event.clientY;
+    window.webGLInteraction.previousMousePosition = { x: event.clientX, y: event.clientY };
 
-    console.log('MouseMove', { deltaX, deltaY, rotationAngles }); // Log the state after mouse move
+    console.log('MouseMove', { deltaX, deltaY, rotationAngles: window.webGLInteraction.rotationAngles });
 
-    // Emit an event or call a global function to trigger the scene update with the new rotation angles
-    updateScene(); // This needs to be defined in your main.js or a similar central place
-}
+    if (window.updateScene) { // Check if updateScene function exists
+        window.updateScene();
+    } else {
+        console.error('updateScene function is not defined.');
+    }
+};
 
-export function handleMouseUp(event) {
-    isDragging = false;
-    console.log('MouseUp', { isDragging }); // Log the state after mouse up
-}
+// Mouse up event
+window.webGLInteraction.handleMouseUp = (event) => {
+    if (window.webGLInteraction.isDragging) {
+        window.webGLInteraction.isDragging = false;
+        console.log('MouseUp', { isDragging: window.webGLInteraction.isDragging });
+    }
+};
