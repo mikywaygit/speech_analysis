@@ -3,7 +3,7 @@ import { mat4 } from 'gl-matrix';
 import { vsSource, fsSource, loadShader, initShaderProgram } from './webgl-utils/shaders.js';
 import { initBuffers } from './webgl-utils/buffers.js';
 import { drawScene } from './webgl-utils/render.js';
-import { setupInteractionHandlers } from './interactions.js';
+import { webGLInteraction, toRadians } from './interactions.js';
 
 async function main() {
     const canvas = document.getElementById('webgl-canvas');
@@ -20,7 +20,8 @@ async function main() {
     window.initShaderProgram = initShaderProgram;
     window.initBuffers = initBuffers;
     window.drawScene = drawScene;
-    window.setupInteractionHandlers = setupInteractionHandlers;
+    window.toRadians = toRadians;  // Make sure toRadians is correctly imported and assigned
+    window.webGLInteraction = webGLInteraction;
 
     // Initialize rotation angles
     window.rotationAngles = { x: 0, y: 0, z: 0 };
@@ -50,8 +51,8 @@ async function main() {
         return;
     }
 
-    // Setup interaction handlers
-    window.setupInteractionHandlers(canvas);
+    // Setup interaction handlers using the methods from webGLInteraction
+    webGLInteraction.setupInteractionHandlers(canvas);
 
     // Initialize and set up the projection matrix
     window.projectionMatrix = mat4.create();
@@ -81,11 +82,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Define the updateScene function globally
 window.updateScene = () => {
+    // First, synchronize the global rotationAngles with those from the interaction
+    window.rotationAngles = { ...window.webGLInteraction.rotationAngles };
+
     if (!window.gl || !window.programInfo || !window.buffers) {
         console.error("WebGL context, programInfo, or buffers are not initialized.");
         return;
     }
+
     console.log("updateScene: WebGL context, programInfo, and buffers are initialized.");
     console.log(`updateScene: Current rotationAngles`, window.rotationAngles);
+    // Now drawScene uses the updated rotation angles for rendering
     window.drawScene(window.gl, window.programInfo, window.buffers, window.rotationAngles);
 };
