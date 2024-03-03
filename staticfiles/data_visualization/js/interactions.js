@@ -13,8 +13,12 @@ const handleMouseMove = function(event) {
     const deltaX = event.clientX - this.previousMousePosition.x;
     const deltaY = event.clientY - this.previousMousePosition.y;
 
+    // Adjust deltaY based on the cube's current X rotation
+    const adjustedDeltaY = Math.cos(this.rotationAngles.x) >= 0 ? deltaY : -deltaY;
+
+    // Apply the adjusted delta values to the cube's rotation angles
     this.rotationAngles.y += toRadians(deltaX);
-    this.rotationAngles.x -= toRadians(deltaY);
+    this.rotationAngles.x -= toRadians(adjustedDeltaY);
 
     this.previousMousePosition = { x: event.clientX, y: event.clientY };
 
@@ -53,3 +57,4 @@ const webGLInteraction = {
 
 // Export the entire namespace as a module
 export { webGLInteraction, toRadians };
+
