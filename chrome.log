@@ -1,2 +1,4 @@
-[5164:5164:0303/212014.772665:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 1 times!
 INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+[50372:50372:0304/183139.163733:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 1 times!
+[50372:50372:0304/184004.487451:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 2 times!
+[50372:50372:0304/184016.357095:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 3 times!

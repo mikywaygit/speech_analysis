@@ -1,5 +1,5 @@
 // Import necessary modules and functions
-import { mat4 } from 'gl-matrix';
+import { mat4, quat } from 'gl-matrix';
 import { vsSource, fsSource, loadShader, initShaderProgram } from './webgl-utils/shaders.js';
 import { initBuffers } from './webgl-utils/buffers.js';
 import { drawScene } from './webgl-utils/render.js';
@@ -20,8 +20,10 @@ async function main() {
     window.initShaderProgram = initShaderProgram;
     window.initBuffers = initBuffers;
     window.drawScene = drawScene;
-    window.toRadians = toRadians;  // Make sure toRadians is correctly imported and assigned
+    window.toRadians = toRadians;
     window.webGLInteraction = webGLInteraction;
+    window.vsSource = vsSource;
+    window.fsSource = fsSource;
 
     // Initialize rotation angles
     window.rotationAngles = { x: 0, y: 0, z: 0 };
@@ -59,39 +61,46 @@ async function main() {
     mat4.perspective(window.projectionMatrix, 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
 
     // Define and start the render loop
-    function renderLoop() {
+    window.renderLoop = function() {
         if (window.rotationAngles.x !== window.lastRotationAngles.x ||
             window.rotationAngles.y !== window.lastRotationAngles.y ||
             window.rotationAngles.z !== window.lastRotationAngles.z) {
             window.updateScene();
             window.lastRotationAngles = { ...window.rotationAngles };
         }
-        requestAnimationFrame(renderLoop);
-    }
+        requestAnimationFrame(window.renderLoop);
+    };
 
-    renderLoop();
+    // Call drawScene initially before starting the render loop
+    window.drawScene(window.gl, window.programInfo, window.buffers, window.rotationAngles);
+
+    // Start the render loop
+    window.renderLoop();
 }
 
-// Make main function globally accessible
-window.main = main;
-
-// Execute the main function once the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', async () => {
-    await window.main();
-});
-
-// Define the updateScene function globally
+// Update the scene based on interactions
 window.updateScene = () => {
-    // First, synchronize the global rotationAngles with those from the interaction
-    window.rotationAngles = { ...window.webGLInteraction.rotationAngles };
+    if (window.webGLInteraction && typeof window.webGLInteraction.axis !== 'undefined' && typeof window.webGLInteraction.angle !== 'undefined') {
+        const quatInstance = quat.create();
+        quat.setAxisAngle(quatInstance, window.webGLInteraction.axis, window.webGLInteraction.angle);
 
-    if (!window.gl || !window.programInfo || !window.buffers) {
-        console.error("WebGL context, programInfo, or buffers are not initialized.");
-        return;
+        const rotationMatrix = mat4.create();
+        mat4.fromQuat(rotationMatrix, quatInstance);
+
+        if (window.drawScene) {
+            window.drawScene(window.gl, window.programInfo, window.buffers, rotationMatrix);
+        } else {
+            console.error('drawScene function is not defined.');
+        }
+    } else {
+        console.warn('Waiting for WebGL interaction axis and angle to be defined.');
     }
-
-    console.log("updateScene: WebGL context, programInfo, and buffers are initialized.");
-    console.log(`updateScene: Current rotationAngles`, window.rotationAngles);
-    // Now drawScene uses the updated rotation angles for rendering
-    window.drawScene(window.gl, window.programInfo, window.buffers, window.rotationAngles);
 };
+
+// Ensure the main function is called when the document is fully loaded
+document.addEventListener('DOMContentLoaded', window.main = main);  // Set main function globally
+
+// Expose all gl-matrix utilities globally for debugging
+window.mat4 = mat4;
+window.quat = quat;
+window.main = main;  // Ensure main is also exposed globally
