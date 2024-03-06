@@ -29,11 +29,15 @@ async function main() {
     window.rotationAngles = { x: 0, y: 0, z: 0 };
     window.lastRotationAngles = { x: 0, y: 0, z: 0 };
 
-    const shaderProgram = await window.initShaderProgram(gl, vsSource, fsSource);
+    const shaderProgram = await window.initShaderProgram(gl, window.vsSource, window.fsSource);
     if (!shaderProgram) {
         console.error('Initializing shader program failed.');
         return;
+    } else {
+        console.log('Shader program initialized successfully.');
     }
+
+    window.shaderProgram = shaderProgram; // Ensure shaderProgram is globally accessible
 
     window.programInfo = {
         program: shaderProgram,
@@ -51,6 +55,8 @@ async function main() {
     if (!window.buffers) {
         console.error('Initializing buffers failed.');
         return;
+    } else {
+        console.log('Buffers initialized successfully.');
     }
 
     // Setup interaction handlers using the methods from webGLInteraction
@@ -98,9 +104,11 @@ window.updateScene = () => {
 };
 
 // Ensure the main function is called when the document is fully loaded
-document.addEventListener('DOMContentLoaded', window.main = main);  // Set main function globally
+document.addEventListener('DOMContentLoaded', () => {
+    window.main = main;
+    window.main(); // Execute main function
+});
 
 // Expose all gl-matrix utilities globally for debugging
 window.mat4 = mat4;
 window.quat = quat;
-window.main = main;  // Ensure main is also exposed globally

@@ -1,68 +1,54 @@
 import { mat4 } from 'gl-matrix';
 
-export function drawScene(gl, programInfo, buffers, rotationMatrix) { // Change from rotationAngles to rotationMatrix
+export function drawScene(gl, programInfo, buffers, rotationMatrix) {
     if (!gl) {
         console.error('WebGL context is not available.');
         return;
     }
 
-    gl.clearColor(0.5, 0.5, 0.5, 1.0); // Set clear color to gray, fully opaque
-    gl.clearDepth(1.0);                // Clear everything
-    gl.enable(gl.DEPTH_TEST);          // Enable depth testing
-    gl.depthFunc(gl.LEQUAL);           // Near things obscure far things
+    // Ensure correct shader program is active
+    gl.useProgram(programInfo.program);
 
-    // Clear the canvas before we start drawing on it.
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-    // Create a perspective matrix, a special matrix that is used to simulate the distortion of perspective in a camera.
-    const fieldOfView = 45 * Math.PI / 180;   // in radians
+    // Setup the perspective matrix
+    const fieldOfView = 45 * Math.PI / 180; // in radians
     const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
     const zNear = 0.1;
     const zFar = 100.0;
     const projectionMatrix = mat4.create();
     mat4.perspective(projectionMatrix, fieldOfView, aspect, zNear, zFar);
 
-    // Set the drawing position to the "identity" point, which is the center of the scene.
-    const modelViewMatrix = mat4.create(); // This now acts as the initial, untranslated model-view matrix
+    // Setup the model-view matrix
+    const modelViewMatrix = mat4.create(); // This acts as the initial, untranslated model-view matrix
+    mat4.translate(modelViewMatrix, modelViewMatrix, [0.0, 0.0, -6.0]); // Translate back
+    mat4.multiply(modelViewMatrix, modelViewMatrix, rotationMatrix); // Apply rotation
 
-    // Now move the drawing position a bit to where we want to start drawing the square.
-    mat4.translate(modelViewMatrix, modelViewMatrix, [-0.0, 0.0, -6.0]);  // amount to translate
-
-    // Apply the rotation matrix directly, which is calculated and passed from the updated interaction logic.
-    mat4.multiply(modelViewMatrix, modelViewMatrix, rotationMatrix); // Apply the rotation matrix to the modelViewMatrix
+    // Clear the canvas
+    gl.clearColor(0.5, 0.5, 0.5, 1.0); // Set clear color to gray
+    gl.clearDepth(1.0); // Clear everything
+    gl.enable(gl.DEPTH_TEST); // Enable depth testing
+    gl.depthFunc(gl.LEQUAL); // Near things obscure far things
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     // Setup for drawing the object
-    // Tell WebGL how to pull out the positions from the position buffer into the vertexPosition attribute and other setup...
-    const numComponents = 3;
-    const type = gl.FLOAT;
-    const normalize = false;
-    const stride = 0;
-    const offset = 0;
     gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
-    gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, numComponents, type, normalize, stride, offset);
+    gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
-
-    // Tell WebGL to use our program when drawing
-    gl.useProgram(programInfo.program);
 
     // Set the shader uniforms
     gl.uniformMatrix4fv(programInfo.uniformLocations.projectionMatrix, false, projectionMatrix);
     gl.uniformMatrix4fv(programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix);
+    gl.uniform4f(programInfo.uniformLocations.uColor, 0.0, 0.0, 0.0, 1.0); // Set color to black for edges
 
     // Draw the object
-    const vertexCount = 36;
-    const typeIndices = gl.UNSIGNED_SHORT;
-    const offsetIndices = 0;
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
-    gl.drawElements(gl.TRIANGLES, vertexCount, typeIndices, offsetIndices);
+    gl.drawElements(gl.TRIANGLES, buffers.indexCount, gl.UNSIGNED_SHORT, 0);
 
-    // Update the color to draw the edges if needed
-    gl.uniform4f(programInfo.uniformLocations.uColor, 0.0, 0.0, 0.0, 1.0); // Set the color to black
-    gl.drawElements(gl.LINES, buffers.edgeCount, gl.UNSIGNED_SHORT, 0); // Draw cube edges
+    // Optionally draw cube edges
+    gl.drawElements(gl.LINES, buffers.edgeCount, gl.UNSIGNED_SHORT, 0);
 }
 
-export function render(gl, programInfo, buffers, rotationMatrix) { // Change from rotationAngles to rotationMatrix
-    requestAnimationFrame(function(time) {
+export function render(gl, programInfo, buffers, rotationMatrix) {
+    requestAnimationFrame(() => {
         drawScene(gl, programInfo, buffers, rotationMatrix);
         requestAnimationFrame(render.bind(null, gl, programInfo, buffers, rotationMatrix));
     });
