@@ -1,9 +1,4 @@
 INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
-[17129:17129:0306/132402.865930:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 1 times!
-[17129:17129:0306/133629.513348:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 2 times!
-[17129:17129:0306/133629.516530:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 3 times!
-[17085:17085:0306/143523.628311:ERROR:browser_main_loop.cc(277)] Gdk: gdk_monitor_get_scale_factor: assertion 'GDK_IS_MONITOR (monitor)' failed
-[17085:17085:0306/143523.628996:ERROR:browser_main_loop.cc(277)] Gdk: gdk_monitor_get_scale_factor: assertion 'GDK_IS_MONITOR (monitor)' failed
-[17085:17085:0306/143523.629346:ERROR:browser_main_loop.cc(277)] Gdk: gdk_monitor_get_scale_factor: assertion 'GDK_IS_MONITOR (monitor)' failed
-[17085:17085:0306/143523.629640:ERROR:browser_main_loop.cc(277)] Gdk: gdk_monitor_get_scale_factor: assertion 'GDK_IS_MONITOR (monitor)' failed
-[17085:17085:0306/160313.837345:ERROR:browser_main_loop.cc(277)] Gdk: gdk_monitor_get_scale_factor: assertion 'GDK_IS_MONITOR (monitor)' failed
+[78706:78706:0307/200735.570618:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 1 times!
+[78706:78706:0307/200735.574584:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 2 times!
+[78706:78706:0307/200831.073310:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 3 times!

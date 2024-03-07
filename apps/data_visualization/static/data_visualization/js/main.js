@@ -29,6 +29,7 @@ async function main() {
     window.rotationAngles = { x: 0, y: 0, z: 0 };
     window.lastRotationAngles = { x: 0, y: 0, z: 0 };
 
+    // Shader program initialization and validation
     const shaderProgram = await window.initShaderProgram(gl, window.vsSource, window.fsSource);
     if (!shaderProgram) {
         console.error('Initializing shader program failed.');
@@ -37,12 +38,16 @@ async function main() {
         console.log('Shader program initialized successfully.');
     }
 
-    window.shaderProgram = shaderProgram; // Ensure shaderProgram is globally accessible
+    // Ensure shaderProgram is globally accessible and log it for verification
+    window.shaderProgram = shaderProgram;
+    console.log('Shader program:', window.shaderProgram); // Log to verify shader program
 
+    // Set program info and validate attribute and uniform locations
     window.programInfo = {
         program: shaderProgram,
         attribLocations: {
             vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
+            vertexColor: gl.getAttribLocation(shaderProgram, 'aVertexColor'), // Added line for vertexColor
         },
         uniformLocations: {
             projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
@@ -50,7 +55,10 @@ async function main() {
             uColor: gl.getUniformLocation(shaderProgram, 'uColor'),
         },
     };
+    // Log to verify attribute and uniform locations
+    console.log('Attribute and Uniform Locations:', window.programInfo.attribLocations, window.programInfo.uniformLocations);
 
+    // Buffers initialization and validation
     window.buffers = await window.initBuffers(gl);
     if (!window.buffers) {
         console.error('Initializing buffers failed.');
