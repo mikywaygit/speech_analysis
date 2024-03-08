@@ -31,27 +31,23 @@ export function initShaderProgram(gl, vsSource, fsSource) {
     return shaderProgram;
 }
 
-// Vertex shader program updated for vertex color attribute
+// Vertex shader program remains unchanged
 export const vsSource = `
     attribute vec3 aVertexPosition;
-    attribute vec4 aVertexColor; // New attribute for vertex colors
-    varying lowp vec4 vColor; // Pass color to the fragment shader
-
     uniform mat4 uModelViewMatrix;
     uniform mat4 uProjectionMatrix;
 
     void main(void) {
         gl_Position = uProjectionMatrix * uModelViewMatrix * vec4(aVertexPosition, 1.0);
-        vColor = aVertexColor; // Pass the color through
     }
 `;
 
-// Fragment shader program updated to use passed color instead of a uniform
+// Fragment shader program updated to set the color to red
 export const fsSource = `
     precision mediump float;
-    varying lowp vec4 vColor; // Received from vertex shader
+    uniform vec4 uColor; // Add this uniform for dynamic color control
 
     void main(void) {
-        gl_FragColor = vColor; // Use the passed color
+        gl_FragColor = uColor; // Use the uniform color
     }
 `;
