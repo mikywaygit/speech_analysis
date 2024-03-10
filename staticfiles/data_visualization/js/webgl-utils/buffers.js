@@ -89,3 +89,4 @@ export function initBuffers(gl) {
         edgeCount: edgeCount, // Add edgeCount here
     };
 }
+
