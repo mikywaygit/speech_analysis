@@ -16,6 +16,7 @@ async function main() {
 
     // Assign globally accessible WebGL utilities
     window.gl = gl;
+    window.rotationMatrix = mat4.create();
     window.loadShader = loadShader;
     window.initShaderProgram = initShaderProgram;
     window.initBuffers = initBuffers;
@@ -75,14 +76,13 @@ async function main() {
 
     // Define and start the render loop
     window.renderLoop = function() {
-        if (window.rotationAngles.x !== window.lastRotationAngles.x ||
-            window.rotationAngles.y !== window.lastRotationAngles.y ||
-            window.rotationAngles.z !== window.lastRotationAngles.z) {
-            window.updateScene();
-            window.lastRotationAngles = { ...window.rotationAngles };
-        }
-        requestAnimationFrame(window.renderLoop);
-    };
+    // Check if an update is necessary here based on your application's logic
+
+    // Use the global rotationMatrix directly
+    window.drawScene(window.gl, window.programInfo, window.buffers, window.rotationMatrix);
+
+    requestAnimationFrame(window.renderLoop);
+};
 
     // Call drawScene initially before starting the render loop
     window.drawScene(window.gl, window.programInfo, window.buffers, window.rotationAngles);
@@ -97,16 +97,10 @@ window.updateScene = () => {
         const quatInstance = quat.create();
         quat.setAxisAngle(quatInstance, window.webGLInteraction.axis, window.webGLInteraction.angle);
 
-        const rotationMatrix = mat4.create();
-        mat4.fromQuat(rotationMatrix, quatInstance);
+        // Update the global rotationMatrix based on interaction
+        mat4.fromQuat(window.rotationMatrix, quatInstance);
 
-        if (window.drawScene) {
-            window.drawScene(window.gl, window.programInfo, window.buffers, rotationMatrix);
-        } else {
-            console.error('drawScene function is not defined.');
-        }
-    } else {
-        console.warn('Waiting for WebGL interaction axis and angle to be defined.');
+        window.drawScene(window.gl, window.programInfo, window.buffers, window.rotationMatrix);
     }
 };
 
