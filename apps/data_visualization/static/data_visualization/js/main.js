@@ -26,6 +26,7 @@ async function main() {
     window.vsSource = vsSource;
     window.fsSource = fsSource;
 
+
     // Initialize rotation angles
     window.rotationAngles = { x: 0, y: 0, z: 0 };
     window.lastRotationAngles = { x: 0, y: 0, z: 0 };

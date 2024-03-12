@@ -44,6 +44,8 @@ const interaction = {
         if (this.isDragging) {
             this.isDragging = false;
             console.log('MouseUp Event Triggered', { isDragging: this.isDragging });
+            window.webGLInteraction.axis = this.axis;
+            window.webGLInteraction.angle = this.angle;
         }
     },
     handleMouseMove(event) {
