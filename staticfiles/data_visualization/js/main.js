@@ -6,12 +6,15 @@ import { drawScene } from './webgl-utils/render.js';
 import { webGLInteraction, toRadians } from './interactions.js';
 
 async function main() {
+    console.log('Starting main function.');
     const canvas = document.getElementById('webgl-canvas');
     const gl = canvas.getContext('webgl');
 
     if (!gl) {
         console.error('Unable to initialize WebGL.');
         return;
+    } else {
+        console.log('WebGL context initialized.');
     }
 
     // Assign globally accessible WebGL utilities
@@ -26,12 +29,12 @@ async function main() {
     window.vsSource = vsSource;
     window.fsSource = fsSource;
 
-
     // Initialize rotation angles
     window.rotationAngles = { x: 0, y: 0, z: 0 };
     window.lastRotationAngles = { x: 0, y: 0, z: 0 };
 
     // Shader program initialization and validation
+    console.log('Initializing shader program.');
     const shaderProgram = await window.initShaderProgram(gl, window.vsSource, window.fsSource);
     if (!shaderProgram) {
         console.error('Initializing shader program failed.');
@@ -40,9 +43,8 @@ async function main() {
         console.log('Shader program initialized successfully.');
     }
 
-    // Ensure shaderProgram is globally accessible and log it for verification
     window.shaderProgram = shaderProgram;
-    console.log('Shader program:', window.shaderProgram); // Log to verify shader program
+    console.log('Shader program:', window.shaderProgram);
 
     // Set program info and validate attribute and uniform locations
     window.programInfo = {
@@ -56,10 +58,10 @@ async function main() {
             uColor: gl.getUniformLocation(shaderProgram, 'uColor'),
         },
     };
-    // Log to verify attribute and uniform locations
     console.log('Attribute and Uniform Locations:', window.programInfo.attribLocations, window.programInfo.uniformLocations);
 
     // Buffers initialization and validation
+    console.log('Initializing buffers.');
     window.buffers = await window.initBuffers(gl);
     if (!window.buffers) {
         console.error('Initializing buffers failed.');
@@ -69,6 +71,7 @@ async function main() {
     }
 
     // Setup interaction handlers using the methods from webGLInteraction
+    console.log('Setting up interaction handlers.');
     webGLInteraction.setupInteractionHandlers(canvas);
 
     // Initialize and set up the projection matrix
@@ -77,36 +80,52 @@ async function main() {
 
     // Define and start the render loop
     window.renderLoop = function() {
-    // Check if an update is necessary here based on your application's logic
-
-    // Use the global rotationMatrix directly
-    window.drawScene(window.gl, window.programInfo, window.buffers, window.rotationMatrix);
-
-    requestAnimationFrame(window.renderLoop);
-};
+        console.log('Render loop tick.');
+        window.drawScene(window.gl, window.programInfo, window.buffers, window.rotationMatrix);
+        requestAnimationFrame(window.renderLoop);
+    };
 
     // Call drawScene initially before starting the render loop
     window.drawScene(window.gl, window.programInfo, window.buffers, window.rotationAngles);
+    console.log('Initial scene rendered.');
 
     // Start the render loop
+    console.log('Starting render loop.');
     window.renderLoop();
 }
 
-// Update the scene based on interactions
 window.updateScene = () => {
+    console.log('Starting updateScene'); // Log when updateScene starts
     if (window.webGLInteraction && typeof window.webGLInteraction.axis !== 'undefined' && typeof window.webGLInteraction.angle !== 'undefined') {
         const quatInstance = quat.create();
+        console.log('Quaternion before setAxisAngle:', quatInstance); // Log before setting axis and angle
         quat.setAxisAngle(quatInstance, window.webGLInteraction.axis, window.webGLInteraction.angle);
+        console.log('Quaternion after setAxisAngle:', quatInstance); // Log after setting axis and angle
+
+        // Debugging: Create a test matrix from quaternion to check its validity before applying it
+        const testMatrix = mat4.create();
+        mat4.fromQuat(testMatrix, quatInstance);
+        console.log('Rotation matrix from quaternion (test):', testMatrix); // Log the test rotation matrix
 
         // Update the global rotationMatrix based on interaction
         mat4.fromQuat(window.rotationMatrix, quatInstance);
+        console.log('Updated global rotationMatrix:', window.rotationMatrix); // Log after updating the rotation matrix
+
+        if (window.rotationMatrix.some(isNaN)) { // Check for NaN values in the rotation matrix
+            console.error('Rotation matrix contains NaN values. Aborting scene update.');
+            return; // Skip updating the scene to avoid errors
+        }
 
         window.drawScene(window.gl, window.programInfo, window.buffers, window.rotationMatrix);
     }
 };
 
+
+
+
 // Ensure the main function is called when the document is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Document loaded. Starting main function.');
     window.main = main;
     window.main(); // Execute main function
 });
