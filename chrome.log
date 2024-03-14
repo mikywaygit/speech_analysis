@@ -1,2 +1,9 @@
-[42792:42792:0313/182921.655234:ERROR:atom_cache.cc(224)] Add _ICC_PROFILE_1 to kAtomsToCache
+[17074:17074:0314/131116.032562:ERROR:atom_cache.cc(224)] Add _ICC_PROFILE_1 to kAtomsToCache
 INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+[17074:17074:0314/164133.857408:ERROR:browser_main_loop.cc(277)] Gdk: gdk_monitor_get_scale_factor: assertion 'GDK_IS_MONITOR (monitor)' failed
+[17074:17074:0314/164133.857980:ERROR:browser_main_loop.cc(277)] Gdk: gdk_monitor_get_scale_factor: assertion 'GDK_IS_MONITOR (monitor)' failed
+[17074:17074:0314/164133.858530:ERROR:browser_main_loop.cc(277)] Gdk: gdk_monitor_get_scale_factor: assertion 'GDK_IS_MONITOR (monitor)' failed
+[17074:17074:0314/164133.858950:ERROR:browser_main_loop.cc(277)] Gdk: gdk_monitor_get_scale_factor: assertion 'GDK_IS_MONITOR (monitor)' failed
+[17124:17124:0314/164134.817342:ERROR:gl_display.cc(520)] EGL Driver message (Error) eglGetMscRateANGLE: glXGetMscRateOML failed.
+[17124:17124:0314/164134.818098:ERROR:gl_display.cc(520)] EGL Driver message (Error) eglGetMscRateANGLE: glXGetMscRateOML failed.
+[17074:17074:0314/164135.090990:ERROR:browser_main_loop.cc(277)] Gdk: gdk_monitor_get_scale_factor: assertion 'GDK_IS_MONITOR (monitor)' failed
