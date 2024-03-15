@@ -1,18 +1,13 @@
 INFO:     Will watch for changes in these directories: ['/home/jan/PycharmProjects/truth_will_set_you_free']
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [17045] using WatchFiles
-INFO:     Started server process [17054]
+INFO:     Started reloader process [8070] using WatchFiles
+INFO:     Started server process [8079]
 INFO:     Waiting for application startup.
 INFO:     ASGI 'lifespan' protocol appears unsupported.
 INFO:     Application startup complete.
-INFO:     127.0.0.1:32778 - "GET /data_visualization/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:32786 - "GET /static/data_visualization/dist/bundle.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36380 - "GET /data_visualization/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36392 - "GET /static/data_visualization/dist/bundle.js HTTP/1.1" 200 OK
 /home/jan/PycharmProjects/truth_will_set_you_free/venv/lib/python3.12/site-packages/django/http/response.py:517: Warning: StreamingHttpResponse must consume synchronous iterators in order to serve them asynchronously. Use an asynchronous iterator instead.
   warnings.warn(
-INFO:     127.0.0.1:32778 - "GET /static/data_visualization/css/style.css HTTP/1.1" 200 OK
-INFO:     127.0.0.1:32786 - "GET /favicon.ico HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:47822 - "GET /static/data_visualization/dist/bundle.js.map HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35682 - "GET /data_visualization/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35682 - "GET /static/data_visualization/css/style.css HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35692 - "GET /static/data_visualization/dist/bundle.js HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35692 - "GET /static/data_visualization/dist/bundle.js.map HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36380 - "GET /static/data_visualization/css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36392 - "GET /favicon.ico HTTP/1.1" 404 Not Found

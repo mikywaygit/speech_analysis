@@ -1,119 +1,104 @@
-// Utility functions for vector operations
-function vecSubtract(a, b) {
-    console.log('vecSubtract called with:', a, b);
-    return { x: a.x - b.x, y: a.y - b.y, z: a.z - b.z };
-}
-
-function vecDot(a, b) {
-    console.log('vecDot called with:', a, b);
-    return a.x * b.x + a.y * b.y + a.z * b.z;
-}
-
-function vecLength(v) {
-    console.log('vecLength called with:', v);
-    return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-}
-
-function vecNormalize(v) {
-    console.log('vecNormalize called with:', v);
-    const len = vecLength(v);
-    if (len === 0) {
-        console.log('Preventing division by zero for vector normalization.');
-        return { x: 0, y: 0, z: 0 };
+// Enhanced Utility functions for vector operations
+class Vector3 {
+    constructor(x, y, z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
-    return { x: v.x / len, y: v.y / len, z: v.z / len };
+
+    subtract(v) {
+        return new Vector3(this.x - v.x, this.y - v.y, this.z - v.z);
+    }
+
+    cross(v) {
+        return new Vector3(
+            this.y * v.z - this.z * v.y,
+            this.z * v.x - this.x * v.z,
+            this.x * v.y - this.y * v.x
+        );
+    }
+
+    dot(v) {
+        return this.x * v.x + this.y * v.y + this.z * v.z;
+    }
+
+    length() {
+        return Math.sqrt(this.dot(this));
+    }
+
+    normalize() {
+        const len = this.length();
+        return len > 0 ? new Vector3(this.x / len, this.y / len, this.z / len) : new Vector3(0, 0, 0);
+    }
 }
 
-function vecCross(a, b) {
-    console.log('vecCross called with:', a, b);
-    return {
-        x: a.y * b.z - a.z * b.y,
-        y: a.z * b.x - a.x * b.z,
-        z: a.x * b.y - a.y * b.x
-    };
-}
-
-const toRadians = (angleInDegrees) => {
-    console.log('toRadians called with:', angleInDegrees);
+function toRadians(angleInDegrees) {
     return angleInDegrees * Math.PI / 180;
-};
+}
 
-// Define the interaction object to hold state and handlers
-const interaction = {
-    isDragging: false,
-    previousMousePosition: { x: 0, y: 0 },
-    axis: [0, 1, 0], // Default axis for initial rotation, can be adjusted
-    angle: 0, // Default angle for initial rotation
+// Interaction logic
+class Interaction {
+    constructor(canvas) {
+        this.canvas = canvas;
+        this.isDragging = false;
+        this.previousMousePosition = new Vector3(0, 0, 0);
+        this.axis = new Vector3(0, 1, 0);
+        this.angle = 0;
 
-    handleMouseDown(event) {
-        this.isDragging = true;
-        this.previousMousePosition = {
-            x: (event.clientX / window.innerWidth) * 2 - 1,
-            y: -(event.clientY / window.innerHeight) * 2 + 1
-        };
-        console.log('MouseDown Event Triggered', this.previousMousePosition);
-    },
-
-    handleMouseUp(event) {
-        if (this.isDragging) {
-            this.isDragging = false;
-            console.log('MouseUp Event Triggered', { isDragging: this.isDragging });
-            console.log('Updating global axis/angle:', this.axis, this.angle);
-            window.webGLInteraction.axis = this.axis;
-            window.webGLInteraction.angle = this.angle;
-        }
-    },
-
-    handleMouseMove(event) {
-        console.log('Mouse Move Detected');
-        if (!this.isDragging) {
-            console.log('MouseMove without drag detected');
-            return;
-        }
-
-        console.log('MouseMove with drag detected');
-        const currentMousePosition = {
-            x: (event.clientX / window.innerWidth) * 2 - 1,
-            y: -(event.clientY / window.innerHeight) * 2 + 1
-        };
-        console.log('Current mouse position:', currentMousePosition);
-
-        const from = this.mapToSphere(this.previousMousePosition.x, this.previousMousePosition.y);
-        const to = this.mapToSphere(currentMousePosition.x, currentMousePosition.y);
-        console.log('Mapping to sphere:', from, to);
-
-        this.axis = vecCross(from, to);
-        this.angle = Math.acos(Math.min(1, vecDot(from, to)));
-        console.log('MouseMove Event Triggered', { axis: this.axis, angle: this.angle });
-
-        if (typeof window.updateScene === 'function') {
-            console.log('Calling updateScene');
-            window.updateScene();
-        }
-    },
+        // Bind event handlers
+        this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this), false);
+        this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this), false);
+        this.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this), false);
+        this.canvas.addEventListener('mouseleave', this.handleMouseUp.bind(this), false);
+    }
 
     mapToSphere(x, y) {
-        console.log('Mapping to sphere with:', x, y);
-        let point = { x: x, y: y, z: 0 };
+        const point = new Vector3(x, y, 0);
         const squareDist = x * x + y * y;
 
         if (squareDist <= 1) {
             point.z = Math.sqrt(1 - squareDist);
         } else {
-            point = vecNormalize(point);
+            point.z = 0; // Project the point onto the sphere
         }
-        console.log('Mapped point:', point);
-        return point;
-    },
-
-    setupInteractionHandlers(canvas) {
-        canvas.addEventListener('mousedown', this.handleMouseDown.bind(this), false);
-        canvas.addEventListener('mousemove', this.handleMouseMove.bind(this), false);
-        canvas.addEventListener('mouseup', this.handleMouseUp.bind(this), false);
-        canvas.addEventListener('mouseleave', this.handleMouseUp.bind(this), false);
-        console.log('Event handlers attached to canvas.');
+        return point.normalize(); // Always return a normalized vector
     }
-};
 
-// Export the entire namespace as a module
-export { interaction as webGLInteraction, toRadians };
+    handleMouseDown(event) {
+        this.isDragging = true;
+        const x = (event.clientX / this.canvas.clientWidth) * 2 - 1;
+        const y = -(event.clientY / this.canvas.clientHeight) * 2 + 1;
+        this.previousMousePosition = new Vector3(x, y, 0);
+    }
+
+    handleMouseUp(event) {
+        this.isDragging = false;
+    }
+
+    handleMouseMove(event) {
+        if (!this.isDragging) return;
+
+        const x = (event.clientX / this.canvas.clientWidth) * 2 - 1;
+        const y = -(event.clientY / this.canvas.clientHeight) * 2 + 1;
+        const currentMousePosition = new Vector3(x, y, 0);
+
+        const from = this.mapToSphere(this.previousMousePosition.x, this.previousMousePosition.y);
+        const to = this.mapToSphere(currentMousePosition.x, currentMousePosition.y);
+
+        this.axis = from.cross(to);
+        const dotProduct = Math.max(-1, Math.min(from.dot(to), 1)); // Clamp dot product value between -1 and 1
+        this.angle = Math.acos(dotProduct);
+
+        if (typeof window.updateScene === 'function') {
+            window.webGLInteraction.axis = [this.axis.x, this.axis.y, this.axis.z];
+            window.webGLInteraction.angle = this.angle;
+            window.updateScene();
+        }
+
+        this.previousMousePosition = currentMousePosition;
+    }
+}
+
+// Initialize the interaction object and bind it to a specific canvas
+const webGLInteraction = new Interaction(document.getElementById('webgl-canvas'));
+export { webGLInteraction, toRadians };

@@ -1,9 +1,10 @@
 // Import necessary modules and functions
-import { mat4, quat } from 'gl-matrix';
+import { mat4, quat, vec3 } from 'gl-matrix';
 import { vsSource, fsSource, loadShader, initShaderProgram } from './webgl-utils/shaders.js';
 import { initBuffers } from './webgl-utils/buffers.js';
 import { drawScene } from './webgl-utils/render.js';
 import { webGLInteraction, toRadians } from './interactions.js';
+
 
 async function main() {
     console.log('Starting main function.');
@@ -96,29 +97,43 @@ async function main() {
 
 window.updateScene = () => {
     console.log('Starting updateScene'); // Log when updateScene starts
-    if (window.webGLInteraction && typeof window.webGLInteraction.axis !== 'undefined' && typeof window.webGLInteraction.angle !== 'undefined') {
+
+    if (window.webGLInteraction &&
+        typeof window.webGLInteraction.axis !== 'undefined' &&
+        typeof window.webGLInteraction.angle !== 'undefined') {
+
+        // Normalize the rotation axis
+        let normalizedAxis = vec3.create();
+        vec3.normalize(normalizedAxis, window.webGLInteraction.axis);
+
+        // Create and set the rotation quaternion based on the normalized axis and the angle
         const quatInstance = quat.create();
-        console.log('Quaternion before setAxisAngle:', quatInstance); // Log before setting axis and angle
-        quat.setAxisAngle(quatInstance, window.webGLInteraction.axis, window.webGLInteraction.angle);
+        quat.setAxisAngle(quatInstance, normalizedAxis, window.webGLInteraction.angle);
+
+        // Log the state of the quaternion before and after setting the axis angle
+        console.log('Quaternion before setAxisAngle:', quat.create()); // Log initial state for comparison
         console.log('Quaternion after setAxisAngle:', quatInstance); // Log after setting axis and angle
 
-        // Debugging: Create a test matrix from quaternion to check its validity before applying it
+        // Convert the quaternion to a rotation matrix for rendering
         const testMatrix = mat4.create();
         mat4.fromQuat(testMatrix, quatInstance);
         console.log('Rotation matrix from quaternion (test):', testMatrix); // Log the test rotation matrix
 
-        // Update the global rotationMatrix based on interaction
-        mat4.fromQuat(window.rotationMatrix, quatInstance);
-        console.log('Updated global rotationMatrix:', window.rotationMatrix); // Log after updating the rotation matrix
-
-        if (window.rotationMatrix.some(isNaN)) { // Check for NaN values in the rotation matrix
+        // Check for NaN values in the rotation matrix before applying it to avoid errors
+        if (testMatrix.some(isNaN)) {
             console.error('Rotation matrix contains NaN values. Aborting scene update.');
-            return; // Skip updating the scene to avoid errors
+            return;
         }
 
+        // If the matrix is valid, update the global rotation matrix and redraw the scene
+        mat4.copy(window.rotationMatrix, testMatrix); // Use mat4.copy to update the global matrix safely
+        console.log('Updated global rotationMatrix:', window.rotationMatrix); // Log after updating the rotation matrix
+
+        // Redraw the scene with the updated rotation
         window.drawScene(window.gl, window.programInfo, window.buffers, window.rotationMatrix);
     }
 };
+
 
 
 
