@@ -134,10 +134,6 @@ window.updateScene = () => {
     }
 };
 
-
-
-
-
 // Ensure the main function is called when the document is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Document loaded. Starting main function.');
