@@ -71,10 +71,6 @@ async function main() {
         console.log('Buffers initialized successfully.');
     }
 
-    // Setup interaction handlers using the methods from webGLInteraction
-    console.log('Setting up interaction handlers.');
-    webGLInteraction.setupInteractionHandlers(canvas);
-
     // Initialize and set up the projection matrix
     window.projectionMatrix = mat4.create();
     mat4.perspective(window.projectionMatrix, 45 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);

@@ -44,6 +44,7 @@ class Interaction {
         this.previousMousePosition = new Vector3(0, 0, 0);
         this.axis = new Vector3(0, 1, 0);
         this.angle = 0;
+        this.sensitivityFactor = 30;
 
         // Bind event handlers
         this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this), false);
@@ -76,27 +77,27 @@ class Interaction {
     }
 
     handleMouseMove(event) {
-        if (!this.isDragging) return;
+    if (!this.isDragging) return;
 
-        const x = (event.clientX / this.canvas.clientWidth) * 2 - 1;
-        const y = -(event.clientY / this.canvas.clientHeight) * 2 + 1;
-        const currentMousePosition = new Vector3(x, y, 0);
+    const x = (event.clientX / this.canvas.clientWidth) * 2 - 1;
+    const y = -(event.clientY / this.canvas.clientHeight) * 2 + 1;
+    const currentMousePosition = new Vector3(x, y, 0);
 
-        const from = this.mapToSphere(this.previousMousePosition.x, this.previousMousePosition.y);
-        const to = this.mapToSphere(currentMousePosition.x, currentMousePosition.y);
+    const from = this.mapToSphere(this.previousMousePosition.x, this.previousMousePosition.y);
+    const to = this.mapToSphere(currentMousePosition.x, currentMousePosition.y);
 
-        this.axis = from.cross(to);
-        const dotProduct = Math.max(-1, Math.min(from.dot(to), 1)); // Clamp dot product value between -1 and 1
-        this.angle = Math.acos(dotProduct);
+    this.axis = from.cross(to);
+    const dotProduct = Math.max(-1, Math.min(from.dot(to), 1)); // Clamp dot product value between -1 and 1
+    this.angle = Math.acos(dotProduct) * this.sensitivityFactor;  // Apply sensitivity factor here
 
-        if (typeof window.updateScene === 'function') {
-            window.webGLInteraction.axis = [this.axis.x, this.axis.y, this.axis.z];
-            window.webGLInteraction.angle = this.angle;
-            window.updateScene();
-        }
-
-        this.previousMousePosition = currentMousePosition;
+    if (typeof window.updateScene === 'function') {
+        window.webGLInteraction.axis = [this.axis.x, this.axis.y, this.axis.z];
+        window.webGLInteraction.angle = this.angle;
+        window.updateScene();
     }
+
+    this.previousMousePosition = currentMousePosition;
+}
 }
 
 // Initialize the interaction object and bind it to a specific canvas
