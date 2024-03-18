@@ -42,9 +42,11 @@ class Interaction {
         this.canvas = canvas;
         this.isDragging = false;
         this.previousMousePosition = new Vector3(0, 0, 0);
+        this.smoothMouse = new Vector3(0, 0, 0); // New smoothed mouse position
+        this.smoothingFactor = 0.5; // New smoothing factor
         this.axis = new Vector3(0, 1, 0);
         this.angle = 0;
-        this.sensitivityFactor = 30;
+        this.sensitivityFactor = 15;  // Adjusted sensitivity factor
 
         // Bind event handlers
         this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this), false);
@@ -56,13 +58,12 @@ class Interaction {
     mapToSphere(x, y) {
         const point = new Vector3(x, y, 0);
         const squareDist = x * x + y * y;
-
         if (squareDist <= 1) {
             point.z = Math.sqrt(1 - squareDist);
         } else {
-            point.z = 0; // Project the point onto the sphere
+            point.z = 0;
         }
-        return point.normalize(); // Always return a normalized vector
+        return point.normalize();
     }
 
     handleMouseDown(event) {
@@ -70,6 +71,7 @@ class Interaction {
         const x = (event.clientX / this.canvas.clientWidth) * 2 - 1;
         const y = -(event.clientY / this.canvas.clientHeight) * 2 + 1;
         this.previousMousePosition = new Vector3(x, y, 0);
+        this.smoothMouse = new Vector3(x, y, 0); // Initialize smoothMouse with current position
     }
 
     handleMouseUp(event) {
@@ -77,27 +79,30 @@ class Interaction {
     }
 
     handleMouseMove(event) {
-    if (!this.isDragging) return;
+        if (!this.isDragging) return;
 
-    const x = (event.clientX / this.canvas.clientWidth) * 2 - 1;
-    const y = -(event.clientY / this.canvas.clientHeight) * 2 + 1;
-    const currentMousePosition = new Vector3(x, y, 0);
+        const x = (event.clientX / this.canvas.clientWidth) * 2 - 1;
+        const y = -(event.clientY / this.canvas.clientHeight) * 2 + 1;
 
-    const from = this.mapToSphere(this.previousMousePosition.x, this.previousMousePosition.y);
-    const to = this.mapToSphere(currentMousePosition.x, currentMousePosition.y);
+        // Apply smoothing
+        this.smoothMouse.x += (x - this.smoothMouse.x) * this.smoothingFactor;
+        this.smoothMouse.y += (y - this.smoothMouse.y) * this.smoothingFactor;
 
-    this.axis = from.cross(to);
-    const dotProduct = Math.max(-1, Math.min(from.dot(to), 1)); // Clamp dot product value between -1 and 1
-    this.angle = Math.acos(dotProduct) * this.sensitivityFactor;  // Apply sensitivity factor here
+        const from = this.mapToSphere(this.previousMousePosition.x, this.previousMousePosition.y);
+        const to = this.mapToSphere(this.smoothMouse.x, this.smoothMouse.y);
 
-    if (typeof window.updateScene === 'function') {
-        window.webGLInteraction.axis = [this.axis.x, this.axis.y, this.axis.z];
-        window.webGLInteraction.angle = this.angle;
-        window.updateScene();
+        this.axis = from.cross(to);
+        const dotProduct = Math.max(-1, Math.min(from.dot(to), 1));
+        this.angle = Math.acos(dotProduct) * this.sensitivityFactor;
+
+        if (typeof window.updateScene === 'function') {
+            window.webGLInteraction.axis = [this.axis.x, this.axis.y, this.axis.z];
+            window.webGLInteraction.angle = this.angle;
+            window.updateScene();
+        }
+
+        this.previousMousePosition = new Vector3(this.smoothMouse.x, this.smoothMouse.y, 0); // Update previousMousePosition to smoothed position for continuity
     }
-
-    this.previousMousePosition = currentMousePosition;
-}
 }
 
 // Initialize the interaction object and bind it to a specific canvas

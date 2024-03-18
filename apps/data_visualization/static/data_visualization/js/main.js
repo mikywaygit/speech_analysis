@@ -29,6 +29,8 @@ async function main() {
     window.webGLInteraction = webGLInteraction;
     window.vsSource = vsSource;
     window.fsSource = fsSource;
+    window.currentQuat = quat.create();
+    window.targetQuat = quat.create();
 
     // Initialize rotation angles
     window.rotationAngles = { x: 0, y: 0, z: 0 };
