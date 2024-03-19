@@ -82,3 +82,4 @@ wcwidth==0.2.13
 websockets==12.0
 pygelf==0.4.2
 channels_redis==4.2.0
+spacy==3.7.4

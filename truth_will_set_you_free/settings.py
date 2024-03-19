@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'django_extensions',
+    'apps.nlp_analysis',
     # APPS ARE BELLOW
     'apps.analyses.apps.AnalysisConfig',
     'apps.frontend.apps.FrontendConfig',
