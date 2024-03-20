@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analysis Home</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'data_visualization/css/style.css' %}">
 </head>
 <body>
     <header>
@@ -23,16 +24,14 @@
             </form>
         </section>
         
-        <!-- Section for displaying text analysis results -->
         <section id="text-analysis-results">
             <h2>Text Analysis Results</h2>
             <div id="text-results-container">Textual results will be displayed here.</div>
         </section>
         
-        <!-- Section for displaying visualization results -->
         <section id="visualization-results">
             <h2>Visualization Results</h2>
-            <!-- Placeholder for the visualization image -->
+            <canvas id="webgl-canvas" width="640" height="480"></canvas>
             <img id="visualization-image" src="" alt="Visualization will appear here" style="display:none;">
         </section>
     </main>
@@ -40,7 +39,8 @@
     <footer>
         <p>© 2024 Analysis Tool</p>
     </footer>
-    
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script src="{% static 'js/websocket_handlers.js' %}"></script>
+    <script src="{% static 'data_visualization/dist/bundle.js' %}"></script>
 </body>
 </html>

@@ -1,2 +1,1 @@
 INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
-[33727:33727:0319/185551.411878:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 1 times!

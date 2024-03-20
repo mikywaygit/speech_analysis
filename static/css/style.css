@@ -1,0 +1,29 @@
+body {
+    text-align: center;
+}
+
+header {
+    margin-bottom: 20px;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Adjust alignment as needed */
+}
+
+#text-input-section, #text-analysis-results {
+    width: 50%; /* Adjust as needed */
+    margin-right: auto; /* Pushes to the left of the central line */
+}
+
+#visualization-results {
+    width: 50%; /* Adjust as needed */
+    margin-left: auto; /* Pushes to the right of the central line */
+}
+
+#webgl-canvas {
+    width: 100%; /* Adjust width as necessary */
+    max-width: 640px; /* Example max width, adjust as needed */
+    height: 480px; /* Adjust height as needed */
+}
