@@ -11,7 +11,6 @@ urlpatterns = [
     path('frontend/', include('apps.frontend.urls')),
     path('user_inputs/', include(('apps.user_inputs.urls', 'user_inputs'), namespace='user_inputs')),
     path('data_visualization/', include(('apps.data_visualization.urls', 'data_visualization'), namespace='data_visualization')),
-    path('nlp_analysis/', include('apps.nlp_analysis.urls')),
 ]
 
 if settings.DEBUG:
