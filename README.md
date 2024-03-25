@@ -1,54 +1,70 @@
-MongoDB
+Speech Analysis Tool
 
-Version Installed: 4.4.28
-Installation Commands:
+Welcome to the Speech Analysis Tool, an innovative application designed to provide in-depth analysis of speech patterns. It analyzes syntax and showcases connections within speech in a captivating 3D graphical interface.
+Features
 
-sh
+    Speech Analysis: Employs sophisticated algorithms for comprehensive syntax analysis.
+    3D Visualization: Connections in syntax are vividly displayed through WebGL, offering a three-dimensional interactive experience.
+    Asynchronous Processing: Utilizes Celery and Websockets for efficient, real-time data handling.
+    Database Integration: Incorporates both MongoDB and SQL databases for robust data management.
 
-sudo apt-get install -y mongodb-org
+Technologies Used
 
-Summary: MongoDB is a NoSQL document database known for its scalability and flexibility. You've installed version 4.4.28, which is designed to handle large amounts of data and complex queries.
-Elasticsearch
+    Backend: Python, Django
+    Frontend: JavaScript, WebGL
+    Asynchronous Technologies: Celery, Websockets
+    Databases: MongoDB, SQL
 
-Version Installed: 8.12.0 (desired version)
-Installation Commands:
+Getting Started
 
-sh
+Follow these instructions to get the project up and running on your local environment for development and testing purposes.
+Prerequisites
 
-wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-8.x.list
-sudo apt-get update && sudo apt-get install elasticsearch
+    Python 3.x
+    Django
+    MongoDB
+    Node.js
+    Redis
 
-Summary: Elasticsearch is a distributed search and analytics engine. It's core to the Graylog stack, providing search capabilities and data indexing.
-Graylog
+Installation
 
-Version Installed: 4.2 (as per the repository package)
-Installation Commands:
+Clone the repository from GitHub:
 
-sh
+bash
 
-wget https://packages.graylog2.org/repo/packages/graylog-4.2-repository_latest.deb
-sudo dpkg -i graylog-4.2-repository_latest.deb
-sudo apt-get update && sudo apt-get install graylog-server
+git clone https://github.com/mikywaygit/speech_analysis.git
 
-Summary: Graylog is a log management and analysis tool for aggregating and analyzing large amounts of machine and system logs. The version you were working on installing is 4.2.
-Java
+Install the required Python dependencies:
 
-Version Installed: OpenJDK 11 (required by Elasticsearch and Graylog)
-Installation Commands:
+bash
 
-sh
+pip install -r requirements.txt
 
-sudo apt install openjdk-11-jre-headless
+To start MongoDB, Redis, and other services, simply run:
 
-Summary: Java is a programming language and computing platform. OpenJDK 11 is the open-source implementation of the Java Platform, Standard Edition, and is required to run Elasticsearch and Graylog.
-Additional Settings
+bash
 
-ulimit and sysctl settings:
+./start_services_script.sh
 
-sh
+Run the Celery worker:
 
-echo "* - nofile 65535" | sudo tee -a /etc/security/limits.conf
-sudo sysctl -p
+bash
 
-Summary: These settings are used to adjust the limits on system resources for processes, which is particularly important for services like Elasticsearch that can require a large number of open files.
+celery -A speech_analysis worker --loglevel=info
+
+Start the Django development server:
+
+bash
+
+python manage.py runserver
+
+Open your web browser and navigate to http://localhost:8000 to explore the application.
+Usage
+
+Through the web interface, record or upload a speech file. Submit the file for analysis to see the breakdown of syntax connections. Interact with the 3D graphical representation to explore different syntactic structures.
+Contributing
+
+Please refer to CONTRIBUTING.md for information on contributing to the project, including our code of conduct and the process for submitting pull requests.
+License
+
+This project is licensed under the MIT License - see the LICENSE.md file for full details.
