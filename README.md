@@ -68,3 +68,5 @@ Please refer to CONTRIBUTING.md for information on contributing to the project, 
 License
 
 This project is licensed under the MIT License - see the LICENSE.md file for full details.
+
++.
