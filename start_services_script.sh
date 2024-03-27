@@ -32,6 +32,10 @@ npm run build
 
 echo "All services are starting..."
 
+# Starting Django development server
+echo "Starting Django development server on port 8001..."
+nohup python manage.py runserver 0.0.0.0:8001 > django.log 2>&1 &
+
 # Opening a new private window of Google Chrome
-echo "Opening a new private window of Google Chrome at http://127.0.0.1:8000/..."
-nohup google-chrome --incognito http://127.0.0.1:8000/ > chrome.log 2>&1 &
+echo "Opening a new private window of Google Chrome at http://127.0.0.1:8001/..."
+nohup google-chrome --incognito http://127.0.0.1:8001/ > chrome.log 2>&1 &

@@ -1,6 +1,6 @@
 INFO:     Will watch for changes in these directories: ['/home/jan/PycharmProjects/truth_will_set_you_free']
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [37979] using WatchFiles
+INFO:     Started reloader process [7499] using WatchFiles
 Process SpawnProcess-1:
 Traceback (most recent call last):
   File "/usr/local/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
@@ -57,4 +57,3 @@ Traceback (most recent call last):
   File "/home/jan/PycharmProjects/truth_will_set_you_free/venv/lib/python3.12/site-packages/django/apps/registry.py", line 138, in check_apps_ready
     raise AppRegistryNotReady("Apps aren't loaded yet.")
 django.core.exceptions.AppRegistryNotReady: Apps aren't loaded yet.
-INFO:     Stopping reloader process [37979]
