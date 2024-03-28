@@ -1,5 +1,2 @@
 Fontconfig error: Cannot load default config file: No such file: (null)
 INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
-[7607:7607:0327/092213.129639:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 1 times!
-[7607:7607:0327/092215.153904:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 2 times!
-[7607:7607:0327/092217.265997:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 3 times!

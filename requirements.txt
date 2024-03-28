@@ -83,3 +83,6 @@ websockets==12.0
 pygelf==0.4.2
 channels_redis==4.2.0
 spacy==3.7.4
+transformers==4.15.0
+torch==1.10.0
+soundfile==0.10.3.post1
