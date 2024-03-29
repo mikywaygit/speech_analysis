@@ -228,3 +228,4 @@ Traceback (most recent call last):
   File "/home/jan/PycharmProjects/truth_will_set_you_free/venv/lib/python3.12/site-packages/django/apps/registry.py", line 138, in check_apps_ready
     raise AppRegistryNotReady("Apps aren't loaded yet.")
 django.core.exceptions.AppRegistryNotReady: Apps aren't loaded yet.
+INFO:     Stopping reloader process [9457]

@@ -33,3 +33,5 @@ you should set broker_connection_retry_on_startup to True.
 [2024-03-28 09:40:44,932: INFO/MainProcess] mingle: searching for neighbors
 [2024-03-28 09:40:45,935: INFO/MainProcess] mingle: all alone
 [2024-03-28 09:40:45,945: INFO/MainProcess] celery@jannone5 ready.
+
+worker: Warm shutdown (MainProcess)
