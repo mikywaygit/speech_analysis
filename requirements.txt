@@ -86,3 +86,5 @@ spacy==3.7.4
 transformers==4.15.0
 torch==1.10.0
 soundfile==0.10.3.post1
+numpy==1.19.5
+pandas==1.1.5
