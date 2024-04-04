@@ -64,3 +64,4 @@ For support, please open an issue on GitHub or contact the project maintainers d
 ### Can I contribute to the algorithm development?
 
 Contributions to all aspects of the project, including algorithm development, are welcome.
+
