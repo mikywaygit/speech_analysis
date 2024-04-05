@@ -42,7 +42,6 @@ celery -A speech_analysis worker --loglevel=info
 # Start the Django development server
 python manage.py runserver
 
-
 ## Usage
 
 Through the web interface, you can record or upload a speech file. Submit the file for analysis to see the breakdown of syntax connections. Interact with the 3D graphical representation to explore different syntactic structures.
