@@ -108,3 +108,4 @@ class Interaction {
 // Initialize the interaction object and bind it to a specific canvas
 const webGLInteraction = new Interaction(document.getElementById('webgl-canvas'));
 export { webGLInteraction, toRadians };
+
